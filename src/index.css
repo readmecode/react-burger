@@ -7,7 +7,51 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+button {
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  text-decoration: none;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-weight: 400;
+  font-style: normal;
+  src: url("./fonts/IBMPlexSans-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "IBM Plex Sans";
+  font-weight: 700;
+  font-style: normal;
+  src: url("./fonts/JetBrainsMono-Bold.woff") format("woff");
+}
+
+@font-face {
+  font-family: "IceLand";
+  font-weight: 400;
+  font-style: normal;
+  src: url("./fonts/Iceland-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: 400;
+  font-style: normal;
+  src: url("./fonts/JetBrainsMono-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-weight: 700;
+  font-style: normal;
+  src: url("./fonts/IBMPlexSans-Bold.woff") format("woff");
 }
