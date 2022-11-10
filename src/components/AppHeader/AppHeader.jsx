@@ -9,35 +9,33 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const AppHeader = () => {
-  const [press, setPress] = useState("first-press");
+  const [press, setPress] = useState("one");
   return (
     <header className={headerStyle.header}>
-      <div className={headerStyle.header__panel}>
+      <nav className={headerStyle.header__panel}>
         <button
           className={headerStyle.header__buttons}
-          onClick={() => setPress("first-click")}
+          onClick={() => setPress("one")}
         >
-          <BurgerIcon
-            type={press === "first-press" ? "primary" : "secondary"}
-          />
+          <BurgerIcon type={press === "one" ? "primary" : "secondary"} />
           Конструктор
         </button>
         <button
           className={headerStyle.header__buttons}
-          onClick={() => setPress("second-click")}
+          onClick={() => setPress("two")}
         >
-          <ListIcon type={press === "first-press" ? "primary" : "secondary"} />
+          <ListIcon type={press === "two" ? "primary" : "secondary"} />
           Лента заказов
         </button>
-        <Logo />
-        <button className={headerStyle.header__buttons}
-          onClick={() => setPress("third-click")}>
-          <ProfileIcon
-            type={press === "first-press" ? "primary" : "secondary"}
-          />
-          Личный кабинет
-        </button>
-      </div>
+      </nav>
+      <Logo />
+      <button
+        className={headerStyle.header__buttons}
+        onClick={() => setPress("three")}
+      >
+        <ProfileIcon type={press === "three" ? "primary" : "secondary"} />
+        Личный кабинет
+      </button>
     </header>
   );
 };

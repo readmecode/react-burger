@@ -1,18 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom/client";
 import appStyle from "./App.module.css";
-import dataSet from "../../utils/data";
+import data from "../../utils/data";
 import AppHeader from "../AppHeader/AppHeader";
-import BurgerIngridients from "../BurgerIngredients/BurgerIngredients";
-import BurgerConstructor from "../BurgerConstructor/BurgerConstructor";
+import BurgerIngredients from "../BurgerIngredients/BurgerIngredients";
 
 function App() {
   return (
     <div className={appStyle.App}>
       <AppHeader />
       <main className={appStyle.main}>
-      <BurgerIngridients data={dataSet} />
-      <BurgerConstructor data={dataSet} />
+        <BurgerIngredients data={[data]} />
       </main>
     </div>
   );
