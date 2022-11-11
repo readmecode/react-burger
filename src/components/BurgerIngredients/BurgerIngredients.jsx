@@ -1,8 +1,10 @@
 import React from "react";
 import burgIngrStyle from "./BurgerIngredients.module.css";
-import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
-import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
+import {
+  Tab,
+  CurrencyIcon,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 
 const BurgerIngredients = ({ data }) => {
   const [current, setCurrent] = React.useState("one");
@@ -27,13 +29,24 @@ const BurgerIngredients = ({ data }) => {
         <div className={burgIngrStyle.burgingridients__menu__box}>
           {data.map(
             (item) =>
-            item.type === "bun" && (
+              item.type === "bun" && (
                 <button key={item._id} onClick={() => {}}>
-                  <IngredientDetails
-                    text={item.name}
-                    price={item.price}
-                    image={item.image}
-                  />
+                  <div className={burgIngrStyle.item}>
+                    <img
+                      src={item.image}
+                      className={burgIngrStyle.item__picture}
+                    />
+                    <div className={burgIngrStyle.item__value}>
+                      <p className={burgIngrStyle.value}>{item.price}</p>
+                      <CurrencyIcon
+                        className={burgIngrStyle.item__logo}
+                        type="primary"
+                      />
+                    </div>
+                    <p className={burgIngrStyle.item__description}>
+                      {item.name}
+                    </p>
+                  </div>
                 </button>
               )
           )}
@@ -43,13 +56,24 @@ const BurgerIngredients = ({ data }) => {
         <div className={burgIngrStyle.burgingridients__menu__box}>
           {data.map(
             (item) =>
-            item.type === "sauce" && (
+              item.type === "sauce" && (
                 <button key={item._id} onClick={() => {}}>
-                  <IngredientDetails
-                    text={item.name}
-                    price={item.price}
-                    image={item.image}
-                  />
+                  <div className={burgIngrStyle.item}>
+                    <img
+                      src={item.image}
+                      className={burgIngrStyle.item__picture}
+                    />
+                    <div className={burgIngrStyle.item__value}>
+                      <p className={burgIngrStyle.value}>{item.price}</p>
+                      <CurrencyIcon
+                        className={burgIngrStyle.item__logo}
+                        type="primary"
+                      />
+                    </div>
+                    <p className={burgIngrStyle.item__description}>
+                      {item.name}
+                    </p>
+                  </div>
                 </button>
               )
           )}
@@ -59,11 +83,17 @@ const BurgerIngredients = ({ data }) => {
         <div className={burgIngrStyle.burgingridients__menu__box}>
           {data.map((item) => (
             <button key={item._id} onClick={() => {}}>
-              <IngredientDetails
-                text={item.name}
-                price={item.price}
-                image={item.image}
-              />
+              <div className={burgIngrStyle.item}>
+                <img src={item.image} className={burgIngrStyle.item__picture} />
+                <div className={burgIngrStyle.item__value}>
+                  <p className={burgIngrStyle.value}>{item.price}</p>
+                  <CurrencyIcon
+                    className={burgIngrStyle.item__logo}
+                    type="primary"
+                  />
+                </div>
+                <p className={burgIngrStyle.item__description}>{item.name}</p>
+              </div>
             </button>
           ))}
         </div>

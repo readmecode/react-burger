@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import constructStyle from "./BurgerConstructor.module.css";
-import OrderDetails from "../OrderDetails/OrderDetails";
 
 import {
   Button,
   CurrencyIcon,
+  ConstructorElement,
+  DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerConstructor = ({ data }) => {
+const BurgerConstructor = ({ data, location }) => {
   return (
     <section className={constructStyle.brgconstructor}>
       <div className={constructStyle.brgconstructor__box}>
@@ -15,49 +16,75 @@ const BurgerConstructor = ({ data }) => {
           {data.map(
             (item) =>
               item.type === "bun" && (
-                <OrderDetails
-                  key={item._id}
-                  name={item.name}
-                  price={item.price}
-                  image={item.image}
-                  locked={true}
-                />
+                <div
+                  className={
+                    location === "top" || location === "bottom"
+                      ? constructStyle.select
+                      : null
+                  }
+                >
+                  {location !== "top" && location !== "bottom" ? (
+                    <DragIcon type="primary" style={{ display: "none" }} />
+                  ) : null}
+                  <ConstructorElement
+                    key={item._id}
+                    type={location}
+                    isLocked={false}
+                    text={item.name}
+                    price={item.price}
+                    thumbnail={item.image}
+                  />
+                </div>
               )
           )}
+
           {data.map(
             (item) =>
               item.type === "main" && (
-                <OrderDetails
-                  key={item._id}
-                  name={item.name}
-                  price={item.price}
-                  image={item.image}
-                  locked={false}
-                />
+                <div
+                  className={
+                    location === "top" || location === "bottom"
+                      ? constructStyle.select
+                      : null
+                  }
+                >
+                  {location !== "top" && location !== "bottom" ? (
+                    <DragIcon type="primary" style={{ display: "none" }} />
+                  ) : null}
+                  <ConstructorElement
+                    key={item._id}
+                    type={location}
+                    isLocked={false}
+                    text={item.name}
+                    price={item.price}
+                    thumbnail={item.image}
+                  />
+                </div>
               )
           )}
+
           {data.map(
             (item) =>
               item.type === "sauce" && (
-                <OrderDetails
-                  key={item._id}
-                  name={item.name}
-                  price={item.price}
-                  image={item.image}
-                  locked={false}
-                />
-              )
-          )}
-          {data.map(
-            (item) =>
-              item.type === "bun" && (
-                <OrderDetails
-                  key={item._id}
-                  name={item.name}
-                  price={item.price}
-                  image={item.image}
-                  locked={true}
-                />
+                <div
+                  className={
+                    location === "top" || location === "bottom"
+                      ? constructStyle.select
+                      : null
+                  }
+                >
+                  {location !== "top" && location !== "bottom" ? (
+                    <DragIcon type="primary" style={{ display: "none" }} />
+                  ) : null}
+                  <ConstructorElement
+                    key={item._id}
+                    type={location}
+                    isLocked={false}
+                    text={item.name}
+                    price={item.price}
+                    thumbnail={item.image}
+                  />
+                </div>
               )
           )}
         </div>

@@ -54,3 +54,55 @@
     grid-template-columns: repeat(2, 1fr);
     justify-items: center;
 }
+
+.item {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    padding: 0;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    align-items: center;
+}
+
+.item__picture {
+    width: 240px;
+    height: 120px;
+    margin: 0;
+    padding: 0;
+}
+
+.item__value {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    padding: 0 8px;
+}
+
+.value {
+    font-family: "Iceland";
+    font-size: 28px;
+    line-height: 24px;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+    color: rgba(242, 242, 243, 1);
+    margin: 0;
+    padding: 0;
+}
+
+
+.item__logo {}
+
+.item__description {
+    font-family: "Jetbrains Mono";
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+    color: rgba(242, 242, 243, 1);
+    margin: 0;
+    padding: 0;
+}
