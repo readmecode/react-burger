@@ -24,15 +24,15 @@ const BurgerIngredients = ({ data }) => {
 
       <div className={burgIngrStyle.burgingridients__menu}>
         <h2 className={burgIngrStyle.burgingridients__menu__title}>Булки</h2>
-        <div className={burgIngrStyle.burgingridients__menu__part}>
+        <div className={burgIngrStyle.burgingridients__menu__box}>
           {data.map(
-            (part) =>
-              part.type === "bun" && (
-                <button key={part._id} onClick={() => {}}>
+            (item) =>
+            item.type === "bun" && (
+                <button key={item._id} onClick={() => {}}>
                   <IngredientDetails
-                    text={part.name}
-                    price={part.price}
-                    image={part.image}
+                    text={item.name}
+                    price={item.price}
+                    image={item.image}
                   />
                 </button>
               )
@@ -40,15 +40,15 @@ const BurgerIngredients = ({ data }) => {
         </div>
 
         <h2 className={burgIngrStyle.burgingridients__menu__title}>Соусы</h2>
-        <div className={burgIngrStyle.burgingridients__menu__part}>
+        <div className={burgIngrStyle.burgingridients__menu__box}>
           {data.map(
-            (part) =>
-              part.type === "sauce" && (
-                <button key={part._id} onClick={() => {}}>
+            (item) =>
+            item.type === "sauce" && (
+                <button key={item._id} onClick={() => {}}>
                   <IngredientDetails
-                    text={part.name}
-                    price={part.price}
-                    image={part.image}
+                    text={item.name}
+                    price={item.price}
+                    image={item.image}
                   />
                 </button>
               )
@@ -56,13 +56,13 @@ const BurgerIngredients = ({ data }) => {
         </div>
 
         <h2 className={burgIngrStyle.burgingridients__menu__title}>Начинки</h2>
-        <div className={burgIngrStyle.burgingridients__menu__part}>
-          {data.map((part) => (
-            <button key={part._id} onClick={() => {}}>
+        <div className={burgIngrStyle.burgingridients__menu__box}>
+          {data.map((item) => (
+            <button key={item._id} onClick={() => {}}>
               <IngredientDetails
-                text={part.name}
-                price={part.price}
-                image={part.image}
+                text={item.name}
+                price={item.price}
+                image={item.image}
               />
             </button>
           ))}
