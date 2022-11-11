@@ -18,8 +18,23 @@
 }
 
 .burgingridients__menu {
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: repeat (2, 1fr);
+    justify-items: left;
+    height: 620px;
+    overflow-y: scroll;
+}
+
+.burgingridients__menu::-webkit-scrollbar {
+    width: 8px;
+    height: 700px;
+    background-color: rgba(19, 19, 22, 1);
+}
+
+.burgingridients__menu::-webkit-scrollbar-thumb {
+    width: 8px;
+    height: 492px;
+    background-color: rgba(133, 133, 173, 1);
 }
 
 .burgingridients__menu__title {
@@ -28,10 +43,10 @@
     line-height: 30px;
     font-weight: 700;
     font-style: normal;
-    display: flex;
-    align-items: center;
     color: rgba(242, 242, 243, 1);
     margin-top: 40px;
+    display: flex;
+    align-items: center;
 }
 
 .burgingridients__menu__part {

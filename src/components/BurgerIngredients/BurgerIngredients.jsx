@@ -4,7 +4,7 @@ import IngredientDetails from "../IngredientDetails/IngredientDetails";
 
 import { Tab } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerIngredients = ({ data, state, setState }) => {
+const BurgerIngredients = ({ data }) => {
   const [current, setCurrent] = React.useState("one");
   return (
     <section className={burgIngrStyle.burgingridients}>
@@ -12,13 +12,13 @@ const BurgerIngredients = ({ data, state, setState }) => {
 
       <div style={{ display: "flex" }}>
         <Tab value="one" active={current === "one"} onClick={setCurrent}>
-          One
+          Булки
         </Tab>
         <Tab value="two" active={current === "two"} onClick={setCurrent}>
-          Two
+          Соусы
         </Tab>
         <Tab value="three" active={current === "three"} onClick={setCurrent}>
-          Three
+          Начинки
         </Tab>
       </div>
 
@@ -28,13 +28,7 @@ const BurgerIngredients = ({ data, state, setState }) => {
           {data.map(
             (part) =>
               part.type === "bun" && (
-                <button
-                  key={part._id}
-                  onClick={() => {
-                    setState(false);
-                    setCurrent("two");
-                  }}
-                >
+                <button key={part._id} onClick={() => {}}>
                   <IngredientDetails
                     text={part.name}
                     price={part.price}
@@ -50,12 +44,7 @@ const BurgerIngredients = ({ data, state, setState }) => {
           {data.map(
             (part) =>
               part.type === "sauce" && (
-                <button
-                  key={part._id}
-                  onClick={() => {
-                    setState(false);
-                  }}
-                >
+                <button key={part._id} onClick={() => {}}>
                   <IngredientDetails
                     text={part.name}
                     price={part.price}
@@ -69,12 +58,7 @@ const BurgerIngredients = ({ data, state, setState }) => {
         <h2 className={burgIngrStyle.burgingridients__menu__title}>Начинки</h2>
         <div className={burgIngrStyle.burgingridients__menu__part}>
           {data.map((part) => (
-            <button
-              key={part._id}
-              onClick={() => {
-                setState(false);
-              }}
-            >
+            <button key={part._id} onClick={() => {}}>
               <IngredientDetails
                 text={part.name}
                 price={part.price}
