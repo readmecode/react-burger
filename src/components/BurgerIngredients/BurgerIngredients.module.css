@@ -59,6 +59,7 @@
     margin-top: 24px;
     margin-bottom: 8px;
     align-items: center;
+    position: relative;
 }
 
 .item__picture {
