@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import constructStyle from "./BurgerConstructor.module.css";
+import OrderDetails from "../OrderDetails/OrderDetails";
+import PropTypes from "prop-types";
+import Modal from "../Modal/Modal";
 
 import {
   Button,
@@ -8,7 +11,7 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerConstructor = ({ data, location }) => {
+const BurgerConstructor = ({ data, location, brgrconstr, setBrgrconstr}) => {
   return (
     <section className={constructStyle.brgconstructor}>
       <div className={constructStyle.brgconstructor__box}>
@@ -29,7 +32,7 @@ const BurgerConstructor = ({ data, location }) => {
                   <ConstructorElement
                     key={item._id}
                     type={location}
-                    isLocked={false}
+                    isLocked={true}
                     text={item.name}
                     price={item.price}
                     thumbnail={item.image}
@@ -94,12 +97,29 @@ const BurgerConstructor = ({ data, location }) => {
           <p className={constructStyle.brgconstructor__amount}>610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="medium">
+        <Button
+          type="primary"
+          size="medium"
+          onClick={() => setBrgrconstr(false)}
+        >
           Нажми на меня
         </Button>
       </div>
+      <Modal state={brgrconstr} setState={setBrgrconstr}>
+      </Modal>
     </section>
   );
+};
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      price: PropTypes.number,
+      image: PropTypes.string,
+      item: PropTypes.number,
+    })
+  ),
 };
 
 export default BurgerConstructor;

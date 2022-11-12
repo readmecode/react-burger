@@ -18,8 +18,10 @@ const Modal = ({ children, state, setState }) => {
     };
   }, [setState]);
 
-  return ReactDom.createPortal(
-    <div className={state === false ? mdlStyle.modal : mdlStyle.modal_inactive}>
+  return ReactDOM.createPortal(
+    <div
+      className={state === false ? mdlStyle.modal : mdlStyle.modal__inactive}
+    >
       <ModalOverlay setState={setState} />
       <div className={mdlStyle.modal__box}>
         <button className={mdlStyle.closebtn} onClick={() => setState(true)}>
@@ -28,8 +30,7 @@ const Modal = ({ children, state, setState }) => {
         {children}
       </div>
     </div>,
-
-    document.querySelector("modal__box")
+    document.getElementById("modalwindow")
   );
 };
 

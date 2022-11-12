@@ -1,12 +1,21 @@
 import React from "react";
 import burgIngrStyle from "./BurgerIngredients.module.css";
+import PropTypes from "prop-types";
+import IngredientDetails from "../IngredientDetails/IngredientDetails";
+import Modal from "../Modal/Modal";
 
 import {
   Tab,
   CurrencyIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerIngredients = ({ data }) => {
+const BurgerIngredients = ({
+  data,
+  state,
+  setState,
+  ingrData,
+  setIngrData,
+}) => {
   const [current, setCurrent] = React.useState("one");
   return (
     <section className={burgIngrStyle.burgingridients}>
@@ -30,7 +39,13 @@ const BurgerIngredients = ({ data }) => {
           {data.map(
             (item) =>
               item.type === "bun" && (
-                <button key={item._id} onClick={() => {}}>
+                <button
+                  key={item._id}
+                  onClick={() => {
+                    setState(false);
+                    setIngrData(item);
+                  }}
+                >
                   <div className={burgIngrStyle.item}>
                     <img
                       src={item.image}
@@ -57,7 +72,14 @@ const BurgerIngredients = ({ data }) => {
           {data.map(
             (item) =>
               item.type === "sauce" && (
-                <button key={item._id} onClick={() => {}}>
+                <button
+                  key={item._id}
+                  onClick={() => {
+                    setState(false);
+                    setIngrData(item);
+                    setCurrent("two");
+                  }}
+                >
                   <div className={burgIngrStyle.item}>
                     <img
                       src={item.image}
@@ -98,8 +120,24 @@ const BurgerIngredients = ({ data }) => {
           ))}
         </div>
       </div>
+
+      <Modal state={state} setState={setState}>
+        <IngredientDetails ingrData={ingrData} />
+      </Modal>
+      
     </section>
   );
+};
+
+BurgerIngredients.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+      price: PropTypes.number,
+      image: PropTypes.string,
+      item: PropTypes.number,
+    })
+  ),
 };
 
 export default BurgerIngredients;

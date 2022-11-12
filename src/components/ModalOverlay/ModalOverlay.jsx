@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import mdloverlayStyle from "./Modal.module.css";
+import React from "react";
+import mdloverlayStyle from "./ModalOverlay.module.css";
 
 const ModalOverlay = ({setState}) => {
     return (

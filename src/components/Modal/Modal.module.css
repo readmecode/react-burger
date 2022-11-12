@@ -11,7 +11,7 @@
     bottom: 0;
 }
 
-.modal_inactive {
+.modal__inactive {
     opacity: 0;
     overflow: hidden;
     top: 0;
