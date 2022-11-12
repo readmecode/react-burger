@@ -2,7 +2,7 @@ import React from "react";
 import orderdtlsStyle from "./OrderDetails.module.css";
 import pic from "../../images/pic.png";
 
-const OrderDetails = ({pic}) => {
+const OrderDetails = () => {
   return (
     <div className={orderdtlsStyle.ordrdetails}>
       <h2 className={orderdtlsStyle.ordrdetails__title}>034536</h2>

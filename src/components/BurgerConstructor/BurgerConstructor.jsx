@@ -11,7 +11,7 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerConstructor = ({ data, location, brgrconstr, setBrgrconstr}) => {
+const BurgerConstructor = ({ data, location, state, setState }) => {
   return (
     <section className={constructStyle.brgconstructor}>
       <div className={constructStyle.brgconstructor__box}>
@@ -97,15 +97,12 @@ const BurgerConstructor = ({ data, location, brgrconstr, setBrgrconstr}) => {
           <p className={constructStyle.brgconstructor__amount}>610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button
-          type="primary"
-          size="medium"
-          onClick={() => setBrgrconstr(false)}
-        >
-          Нажми на меня
+        <Button type="primary" size="medium" onClick={() => setState(false)}>
+          Оформить заказ
         </Button>
       </div>
-      <Modal state={brgrconstr} setState={setBrgrconstr}>
+      <Modal state={state} setState={setState}>
+        <OrderDetails />
       </Modal>
     </section>
   );

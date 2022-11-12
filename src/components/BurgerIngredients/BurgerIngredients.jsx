@@ -104,7 +104,8 @@ const BurgerIngredients = ({
         <h2 className={burgIngrStyle.burgingridients__menu__title}>Начинки</h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
           {data.map((item) => (
-            <button key={item._id} onClick={() => {}}>
+            <button key={item._id} onClick={() => {
+              setState(false)}}>
               <div className={burgIngrStyle.item}>
                 <img src={item.image} className={burgIngrStyle.item__picture} />
                 <div className={burgIngrStyle.item__value}>

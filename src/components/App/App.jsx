@@ -14,7 +14,8 @@ function App() {
     const getDataFromServer = () => {
       return fetch(`${apiServer}`)
         .then((res) => res.json())
-        .then((data) => setData(data.data));
+        .then((data) => setData(data.data))
+        .catch(() => Promise.reject("Кажется здесь произошла ошибка, кэп"));
     };
     getDataFromServer();
   }, [setData]);
@@ -22,7 +23,7 @@ function App() {
     <div className={appStyle.App}>
       <AppHeader />
       <main className={appStyle.main}>
-      <BurgerIngredients
+        <BurgerIngredients
           data={data}
           ingrData={ingrData}
           setIngrData={setIngrData}
