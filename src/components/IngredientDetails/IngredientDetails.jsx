@@ -5,25 +5,25 @@ const IngredientDetails = ({ ingrData }) => {
   return (
     <div className={ingrdetStyle.ingr}>
       <h2 className={ingrdetStyle.ingr__title}>Детали ингредиента</h2>
-      <img src={ingrData.image} className={ingrdetStyle.ingr__img} />
-      <div className={ingrdetStyle.ingr__structure}>
-        <h3 className={ingrdetStyle.ingr__title__name}>{ingrData.name}</h3>
-        <div className={ingrdetStyle.ingr__box__container}>
+      <img src={ingrData.image} className={ingrdetStyle.ingr__pic} />
+      <div className={ingrdetStyle.ingr__block}>
+        <h3 className={ingrdetStyle.ingr__titles}>{ingrData.name}</h3>
+        <div className={ingrdetStyle.ingr__specs}>
           <span className={ingrdetStyle.ingr__box}>
-            <h4 className={ingrdetStyle.ingr__box__name}>Калории, ккал</h4>
-            <p className={ingrdetStyle.ingr__box__num}>{ingrData.calories}</p>
+            <h4 className={ingrdetStyle.ingr__box__indicator}>Калории, ккал</h4>
+            <p className={ingrdetStyle.ingr__box__value}>{ingrData.calories}</p>
           </span>
           <span className={ingrdetStyle.ingr__box}>
-            <h4 className={ingrdetStyle.ingr__box__name}>Белки, г</h4>
-            <p className={ingrdetStyle.ingr__box__num}>{ingrData.proteins}</p>
+            <h4 className={ingrdetStyle.ingr__box__indicator}>Белки, г</h4>
+            <p className={ingrdetStyle.ingr__box__value}>{ingrData.proteins}</p>
           </span>
           <span className={ingrdetStyle.ingr__box}>
-            <h4 className={ingrdetStyle.ingr__box__name}>Жиры, г</h4>
-            <p className={ingrdetStyle.ingr__box__num}>{ingrData.fat}</p>
+            <h4 className={ingrdetStyle.ingr__box__indicator}>Жиры, г</h4>
+            <p className={ingrdetStyle.ingr__box__value}>{ingrData.fat}</p>
           </span>
           <span className={ingrdetStyle.ingr__box}>
-            <h4 className={ingrdetStyle.ingr__box__name}>Углеводы, г</h4>
-            <p className={ingrdetStyle.ingr__box__num}>
+            <h4 className={ingrdetStyle.ingr__box__indicator}>Углеводы, г</h4>
+            <p className={ingrdetStyle.ingr__box__value}>
               {ingrData.carbohydrates}
             </p>
           </span>

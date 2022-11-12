@@ -7,6 +7,7 @@ import Modal from "../Modal/Modal";
 import {
   Tab,
   CurrencyIcon,
+  Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const BurgerIngredients = ({
@@ -17,6 +18,7 @@ const BurgerIngredients = ({
   setIngrData,
 }) => {
   const [current, setCurrent] = React.useState("one");
+
   return (
     <section className={burgIngrStyle.burgingridients}>
       <h1 className={burgIngrStyle.burgingridients__title}>Соберите бургер</h1>
@@ -44,12 +46,19 @@ const BurgerIngredients = ({
                   onClick={() => {
                     setState(false);
                     setIngrData(item);
+                    setCurrent("one");
                   }}
                 >
                   <div className={burgIngrStyle.item}>
                     <img
                       src={item.image}
+                      alt={item.name}
                       className={burgIngrStyle.item__picture}
+                    />
+                    <Counter
+                      className={burgIngrStyle.counter}
+                      count={1}
+                      size="default"
                     />
                     <div className={burgIngrStyle.item__value}>
                       <p className={burgIngrStyle.value}>{item.price}</p>
@@ -83,7 +92,13 @@ const BurgerIngredients = ({
                   <div className={burgIngrStyle.item}>
                     <img
                       src={item.image}
+                      alt={item.name}
                       className={burgIngrStyle.item__picture}
+                    />
+                    <Counter
+                      className={burgIngrStyle.counter}
+                      count={1}
+                      size="default"
                     />
                     <div className={burgIngrStyle.item__value}>
                       <p className={burgIngrStyle.value}>{item.price}</p>
@@ -104,10 +119,25 @@ const BurgerIngredients = ({
         <h2 className={burgIngrStyle.burgingridients__menu__title}>Начинки</h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
           {data.map((item) => (
-            <button key={item._id} onClick={() => {
-              setState(false)}}>
+            <button
+              key={item._id}
+              onClick={() => {
+                setState(false);
+                setIngrData(item);
+                setCurrent("three");
+              }}
+            >
               <div className={burgIngrStyle.item}>
-                <img src={item.image} className={burgIngrStyle.item__picture} />
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  className={burgIngrStyle.item__picture}
+                />
+                <Counter
+                  className={burgIngrStyle.counter}
+                  count={1}
+                  size="default"
+                />
                 <div className={burgIngrStyle.item__value}>
                   <p className={burgIngrStyle.value}>{item.price}</p>
                   <CurrencyIcon
@@ -125,7 +155,6 @@ const BurgerIngredients = ({
       <Modal state={state} setState={setState}>
         <IngredientDetails ingrData={ingrData} />
       </Modal>
-      
     </section>
   );
 };

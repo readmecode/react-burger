@@ -9,11 +9,11 @@ const OrderDetails = () => {
       <p className={orderdtlsStyle.ordrdetails__subtitle}>
         идентификатор заказа
       </p>
-      <img src={pic} className={orderdtlsStyle.ordrdetails__img__done} />
-      <p className={orderdtlsStyle.ordrdetails__upper__text}>
+      <img src={pic} className={orderdtlsStyle.ordrdetails__pic} />
+      <p className={orderdtlsStyle.ordrdetails__status}>
         Ваш заказ начали готовить
       </p>
-      <p className={orderdtlsStyle.ordrdetails__lower__text}>
+      <p className={orderdtlsStyle.ordrdetails__notification}>
         Дождитесь готовности на орбитальной станции
       </p>
     </div>
