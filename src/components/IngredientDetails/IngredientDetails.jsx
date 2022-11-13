@@ -5,7 +5,11 @@ const IngredientDetails = ({ ingrData }) => {
   return (
     <div className={ingrdetStyle.ingr}>
       <h2 className={ingrdetStyle.ingr__title}>Детали ингредиента</h2>
-      <img src={ingrData.image} className={ingrdetStyle.ingr__pic} />
+      <img
+        src={ingrData.image}
+        alt={ingrData.name}
+        className={ingrdetStyle.ingr__pic}
+      />
       <div className={ingrdetStyle.ingr__block}>
         <h3 className={ingrdetStyle.ingr__titles}>{ingrData.name}</h3>
         <div className={ingrdetStyle.ingr__specs}>

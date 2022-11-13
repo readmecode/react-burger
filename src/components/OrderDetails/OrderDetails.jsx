@@ -9,7 +9,7 @@ const OrderDetails = () => {
       <p className={orderdtlsStyle.ordrdetails__subtitle}>
         идентификатор заказа
       </p>
-      <img src={pic} className={orderdtlsStyle.ordrdetails__pic} />
+      <img src={pic} alt="пикча" className={orderdtlsStyle.ordrdetails__pic} />
       <p className={orderdtlsStyle.ordrdetails__status}>
         Ваш заказ начали готовить
       </p>

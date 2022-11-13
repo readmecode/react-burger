@@ -22,7 +22,7 @@ const Modal = ({ children, state, setState }) => {
     <div
       className={state === false ? mdlStyle.modal : mdlStyle.modal__inactive}
     >
-      <ModalOverlay setState={setState}/>
+      <ModalOverlay setState={setState} />
       <div className={mdlStyle.modal__box}>
         <button className={mdlStyle.closebtn} onClick={() => setState(true)}>
           <CloseIcon type="primary" />

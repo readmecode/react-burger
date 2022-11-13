@@ -11,52 +11,37 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerConstructor = ({ data, location, state, setState }) => {
+const BurgerConstructor = ({ data, state, setState }) => {
   return (
     <section className={constructStyle.brgconstructor}>
-      <div className={constructStyle.brgconstructor__box}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
-          {data.map(
-            (item) =>
-              item.type === "bun" && (
-                <div
-                  className={
-                    location === "top" || location === "bottom"
-                      ? constructStyle.select
-                      : null
-                  }
-                >
-                  {location !== "top" && location !== "bottom" ? (
-                    <DragIcon type="primary" style={{ display: "none" }} />
-                  ) : null}
-                  <ConstructorElement
-                    key={item._id}
-                    type={location}
-                    isLocked={true}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                  />
-                </div>
-              )
-          )}
+      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        {data.map(
+          (item) =>
+            item.type === "bun" && (
+              <div className={constructStyle.select}>
+                <ConstructorElement
+                  key={item._id}
+                  type={"top"}
+                  isLocked={true}
+                  text={item.name}
+                  price={item.price}
+                  thumbnail={item.image}
+                />
+              </div>
+            )
+        )}
+      </div>
 
+      <div className={constructStyle.brgconstructor__box}>
+        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
           {data.map(
             (item) =>
               item.type === "main" && (
-                <div
-                  className={
-                    location === "top" || location === "bottom"
-                      ? constructStyle.select
-                      : null
-                  }
-                >
-                  {location !== "top" && location !== "bottom" ? (
-                    <DragIcon type="primary" style={{ display: "none" }} />
-                  ) : null}
+                <div>
+                  <DragIcon type="primary" />
                   <ConstructorElement
                     key={item._id}
-                    type={location}
+                    type={""}
                     isLocked={false}
                     text={item.name}
                     price={item.price}
@@ -65,23 +50,30 @@ const BurgerConstructor = ({ data, location, state, setState }) => {
                 </div>
               )
           )}
-
           {data.map(
             (item) =>
               item.type === "sauce" && (
-                <div
-                  className={
-                    location === "top" || location === "bottom"
-                      ? constructStyle.select
-                      : null
-                  }
-                >
-                  {location !== "top" && location !== "bottom" ? (
-                    <DragIcon type="primary" style={{ display: "none" }} />
-                  ) : null}
+                <div>
+                  <DragIcon type="primary" />
                   <ConstructorElement
                     key={item._id}
-                    type={location}
+                    type={""}
+                    isLocked={false}
+                    text={item.name}
+                    price={item.price}
+                    thumbnail={item.image}
+                  />
+                </div>
+              )
+          )}
+          {data.map(
+            (item) =>
+              item.type === "bun" && (
+                <div>
+                  <DragIcon type="primary" />
+                  <ConstructorElement
+                    key={item._id}
+                    type={""}
                     isLocked={false}
                     text={item.name}
                     price={item.price}
@@ -92,6 +84,25 @@ const BurgerConstructor = ({ data, location, state, setState }) => {
           )}
         </div>
       </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+        {data.map(
+          (item) =>
+            item.type === "bun" && (
+              <div className={constructStyle.select}>
+                <ConstructorElement
+                  key={item._id}
+                  type={"bottom"}
+                  isLocked={true}
+                  text={item.name}
+                  price={item.price}
+                  thumbnail={item.image}
+                />
+              </div>
+            )
+        )}
+      </div>
+
       <div className={constructStyle.brgconstructor__total}>
         <div className={constructStyle.brgconstructor__total__order}>
           <p className={constructStyle.brgconstructor__amount}>610</p>
