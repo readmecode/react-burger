@@ -1,6 +1,7 @@
 import React from "react";
 import orderdtlsStyle from "./OrderDetails.module.css";
 import pic from "../../images/pic.png";
+import PropTypes from "prop-types";
 
 const OrderDetails = () => {
   return (
@@ -18,6 +19,10 @@ const OrderDetails = () => {
       </p>
     </div>
   );
+};
+
+OrderDetails.propTypes = {
+  pic: PropTypes.string.isRequired,
 };
 
 export default OrderDetails;

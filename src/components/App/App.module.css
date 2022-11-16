@@ -8,11 +8,10 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 40px;
-    padding: 0 340px;
-    margin: 0 40px;
+    padding: 0 320px;
 }
 
-@media screen and (max-width: 1900px) {
+@media screen and (max-width: 1600px) {
     .main {
         padding: 0 40px;
     }

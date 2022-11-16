@@ -1,5 +1,6 @@
 import React from "react";
 import ingrdetStyle from "./IngredientDetails.module.css";
+import PropTypes from "prop-types";
 
 const IngredientDetails = ({ ingrData }) => {
   return (
@@ -35,6 +36,19 @@ const IngredientDetails = ({ ingrData }) => {
       </div>
     </div>
   );
+};
+
+IngredientDetails.propTypes = {
+  ingrData: PropTypes.arrayOf(
+    PropTypes.arrayOf({
+      name: PropTypes.string,
+      image: PropTypes.string,
+      proteins: PropTypes.number,
+      carbohydrates: PropTypes.number,
+      fat: PropTypes.number,
+      calories: PropTypes.number,
+    })
+  ),
 };
 
 export default IngredientDetails;

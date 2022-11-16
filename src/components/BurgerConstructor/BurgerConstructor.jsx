@@ -11,98 +11,69 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerConstructor = ({ data, state, setState }) => {
+const BurgerItem = ({ componentItem, bunType, isLocked, bunTypePart }) => {
+  function isAvailItem() {
+    if (bunType === "") {
+      return <DragIcon type="primary" />;
+    }
+  }
   return (
-    <section className={constructStyle.brgconstructor}>
-      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-        {data.map(
-          (item) =>
-            item.type === "bun" && (
-              <div className={constructStyle.select}>
-                <ConstructorElement
-                  key={item._id}
-                  type={"top"}
-                  isLocked={true}
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}
-                />
-              </div>
-            )
-        )}
+    <div className={constructStyle.brgconstructor__list}>
+      {isAvailItem()}
+      <div className={constructStyle.select}>
+        <ConstructorElement
+          type={bunType}
+          isLocked={isLocked}
+          text={componentItem.name + bunTypePart}
+          price={componentItem.price}
+          thumbnail={componentItem.image}
+        />
       </div>
+    </div>
+  );
+};
 
-      <div className={constructStyle.brgconstructor__box}>
-        <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-          {data.map(
-            (item) =>
-              item.type === "main" && (
-                <div>
-                  <DragIcon type="primary" />
-                  <ConstructorElement
-                    key={item._id}
-                    type={""}
-                    isLocked={false}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                  />
-                </div>
-              )
-          )}
-          {data.map(
-            (item) =>
-              item.type === "sauce" && (
-                <div>
-                  <DragIcon type="primary" />
-                  <ConstructorElement
-                    key={item._id}
-                    type={""}
-                    isLocked={false}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                  />
-                </div>
-              )
-          )}
-          {data.map(
-            (item) =>
-              item.type === "bun" && (
-                <div>
-                  <DragIcon type="primary" />
-                  <ConstructorElement
-                    key={item._id}
-                    type={""}
-                    isLocked={false}
-                    text={item.name}
-                    price={item.price}
-                    thumbnail={item.image}
-                  />
-                </div>
-              )
-          )}
-        </div>
+const BurgerConstructor = ({ data }) => {
+  function findBun(itemId) {
+    const burgerData = data.find(function (element) {
+      return element._id === itemId;
+    });
+    return burgerData;
+  }
+  const buns = data.find(function (element) {
+    return element.type === "bun";
+  });
+
+  const [state, setState] = useState(true);
+  return (
+    <section className={`${constructStyle.brgconstructor} mt-25 ml-4`}>
+      <BurgerItem
+        componentItem={buns}
+        bunType={"top"}
+        isLocked={true}
+        bunTypePart={" (верх)"}
+      />
+      <div className={`${constructStyle.brgconstructor__box} pr-2`}>
+        {data.map((element) => {
+          if (element.type !== "bun") {
+            return (
+              <BurgerItem
+                componentItem={findBun(element._id)}
+                bunType={""}
+                isLocked={false}
+                bunTypePart={""}
+                key={element._id}
+              />
+            );
+          }
+        })}
       </div>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-        {data.map(
-          (item) =>
-            item.type === "bun" && (
-              <div className={constructStyle.select}>
-                <ConstructorElement
-                  key={item._id}
-                  type={"bottom"}
-                  isLocked={true}
-                  text={item.name}
-                  price={item.price}
-                  thumbnail={item.image}
-                />
-              </div>
-            )
-        )}
-      </div>
-
+      <BurgerItem
+        componentItem={buns}
+        bunType={"bottom"}
+        isLocked={true}
+        bunTypePart={" (низ)"}
+      />
       <div className={constructStyle.brgconstructor__total}>
         <div className={constructStyle.brgconstructor__total__order}>
           <p className={constructStyle.brgconstructor__amount}>610</p>
@@ -112,22 +83,13 @@ const BurgerConstructor = ({ data, state, setState }) => {
           Оформить заказ
         </Button>
       </div>
-      <Modal state={state} setState={setState}>
-        <OrderDetails />
-      </Modal>
+      {setState && (
+        <Modal state={state} setState={setState}>
+          <OrderDetails />
+        </Modal>
+      )}
     </section>
   );
-};
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string,
-      price: PropTypes.number,
-      image: PropTypes.string,
-      item: PropTypes.number,
-    })
-  ),
 };
 
 export default BurgerConstructor;

@@ -13,29 +13,61 @@ const AppHeader = () => {
   return (
     <header className={headerStyle.header}>
       <nav className={headerStyle.header__panel}>
-        <button
-          className={headerStyle.header__buttons}
-          onClick={() => setPress("one")}
-        >
-          <BurgerIcon type={press === "one" ? "primary" : "secondary"} />
-          Конструктор
-        </button>
-        <button
-          className={headerStyle.header__buttons}
-          onClick={() => setPress("two")}
-        >
-          <ListIcon type={press === "two" ? "primary" : "secondary"} />
-          Лента заказов
-        </button>
+        <a href="#" className={headerStyle.link}>
+          <button
+            className={headerStyle.header__buttons}
+            onClick={() => setPress("one")}
+          >
+            <BurgerIcon type={press === "one" ? "primary" : "secondary"} />
+            <p
+              className={
+                press === "one"
+                  ? "text text_type_main-default"
+                  : "text text_type_main-default text_color_inactive"
+              }
+            >
+              Конструктор{" "}
+            </p>
+          </button>
+        </a>
+        <a href="#" className={headerStyle.link}>
+          <button
+            className={headerStyle.header__buttons}
+            onClick={() => setPress("two")}
+          >
+            <ListIcon type={press === "two" ? "primary" : "secondary"} />
+            <p
+              className={
+                press === "two"
+                  ? "text text_type_main-default"
+                  : "text text_type_main-default text_color_inactive"
+              }
+            >
+              Лента заказов{" "}
+            </p>
+          </button>
+        </a>
       </nav>
-      <Logo />
-      <button
-        className={headerStyle.header__buttons}
-        onClick={() => setPress("three")}
-      >
-        <ProfileIcon type={press === "three" ? "primary" : "secondary"} />
-        Личный кабинет
-      </button>
+      <div className={headerStyle.logotype}>
+        <Logo />
+      </div>
+      <a href="#" className={headerStyle.link}>
+        <button
+          className={headerStyle.header__buttons}
+          onClick={() => setPress("three")}
+        >
+          <ProfileIcon type={press === "three" ? "primary" : "secondary"} />
+          <p
+            className={
+              press === "three"
+                ? "text text_type_main-default"
+                : "text text_type_main-default text_color_inactive"
+            }
+          >
+            Личный кабинет{" "}
+          </p>
+        </button>
+      </a>
     </header>
   );
 };

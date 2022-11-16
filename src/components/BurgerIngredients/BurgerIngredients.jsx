@@ -10,15 +10,10 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerIngredients = ({
-  data,
-  state,
-  setState,
-  ingrData,
-  setIngrData,
-}) => {
+const BurgerIngredients = ({ data }) => {
   const [current, setCurrent] = React.useState("one");
-
+  const [state, setState] = React.useState(true);
+  const [ingrData, setIngrData] = React.useState({});
   return (
     <section className={burgIngrStyle.burgingridients}>
       <h1 className={burgIngrStyle.burgingridients__title}>Соберите бургер</h1>
@@ -36,6 +31,7 @@ const BurgerIngredients = ({
       </div>
 
       <div className={burgIngrStyle.burgingridients__menu}>
+
         <h2 className={burgIngrStyle.burgingridients__menu__title}>Булки</h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
           {data.map(
@@ -75,6 +71,9 @@ const BurgerIngredients = ({
               )
           )}
         </div>
+
+
+
 
         <h2 className={burgIngrStyle.burgingridients__menu__title}>Соусы</h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
@@ -162,10 +161,10 @@ const BurgerIngredients = ({
 BurgerIngredients.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      name: PropTypes.string,
-      price: PropTypes.number,
-      image: PropTypes.string,
-      item: PropTypes.number,
+      name: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired,
+      item: PropTypes.number.isRequired,
     })
   ),
 };

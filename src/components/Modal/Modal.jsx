@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import mdlStyle from "./Modal.module.css";
+import PropTypes from "prop-types";
 
 import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
@@ -23,7 +24,7 @@ const Modal = ({ children, state, setState }) => {
       className={state === false ? mdlStyle.modal : mdlStyle.modal__inactive}
     >
       <ModalOverlay setState={setState} />
-      <div className={mdlStyle.modal__box}>
+      <div className={mdlStyle.modal__box} >
         <button className={mdlStyle.closebtn} onClick={() => setState(true)}>
           <CloseIcon type="primary" />
         </button>
@@ -32,6 +33,10 @@ const Modal = ({ children, state, setState }) => {
     </div>,
     document.getElementById("modalwindow")
   );
+};
+
+Modal.propTypes = {
+  children: PropTypes.element.isRequired,
 };
 
 export default Modal;
