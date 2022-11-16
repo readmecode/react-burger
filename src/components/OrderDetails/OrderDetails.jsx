@@ -22,7 +22,7 @@ const OrderDetails = () => {
 };
 
 OrderDetails.propTypes = {
-  pic: PropTypes.string.isRequired,
+  pic: PropTypes.string
 };
 
 export default OrderDetails;

@@ -163,8 +163,7 @@ BurgerIngredients.propTypes = {
     PropTypes.shape({
       name: PropTypes.string.isRequired,
       price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
-      item: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired
     })
   ),
 };

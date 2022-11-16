@@ -11,7 +11,7 @@ const ModalOverlay = ({ children, setState }) => {
 };
 
 ModalOverlay.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.element
 };
 
 export default ModalOverlay;

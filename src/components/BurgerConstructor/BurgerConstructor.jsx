@@ -79,7 +79,7 @@ const BurgerConstructor = ({ data }) => {
           <p className={constructStyle.brgconstructor__amount}>610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button type="primary" size="medium" onClick={() => setState(false)}>
+        <Button htmlType="button" type="primary" size="medium" onClick={() => setState(false)}>
           Оформить заказ
         </Button>
       </div>
@@ -90,6 +90,16 @@ const BurgerConstructor = ({ data }) => {
       )}
     </section>
   );
+};
+
+BurgerConstructor.propTypes = {
+  componentItem: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired,
+    })
+  ),
 };
 
 export default BurgerConstructor;
