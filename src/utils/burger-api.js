@@ -1,4 +1,4 @@
-const burgerApi = "https://norma.nomoreparties.space/api";
+const BURGER_API = "https://norma.nomoreparties.space/api";
 
 const checkRes = (res) => {
   if (res.ok) {
@@ -8,7 +8,7 @@ const checkRes = (res) => {
 };
 
 function getIngredients(setData) {
-  return fetch(`${burgerApi}/ingredients`)
+  return fetch(`${BURGER_API}/ingredients`)
     .then(checkRes)
     .then(setData)
     .catch((err) => {

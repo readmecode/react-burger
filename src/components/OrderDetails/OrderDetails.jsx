@@ -21,8 +21,4 @@ const OrderDetails = () => {
   );
 };
 
-OrderDetails.propTypes = {
-  pic: PropTypes.string
-};
-
 export default OrderDetails;

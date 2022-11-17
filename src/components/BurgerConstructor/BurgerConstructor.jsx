@@ -79,7 +79,12 @@ const BurgerConstructor = ({ data }) => {
           <p className={constructStyle.brgconstructor__amount}>610</p>
           <CurrencyIcon type="primary" />
         </div>
-        <Button htmlType="button" type="primary" size="medium" onClick={() => setState(false)}>
+        <Button
+          htmlType="button"
+          type="primary"
+          size="medium"
+          onClick={() => setState(false)}
+        >
           Оформить заказ
         </Button>
       </div>
@@ -92,7 +97,7 @@ const BurgerConstructor = ({ data }) => {
   );
 };
 
-BurgerConstructor.propTypes = {
+BurgerItem.propTypes = {
   componentItem: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
@@ -100,6 +105,11 @@ BurgerConstructor.propTypes = {
       image: PropTypes.string.isRequired,
     })
   ),
+};
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.array.isRequired,
+  state: PropTypes.array.isRequired,
 };
 
 export default BurgerConstructor;

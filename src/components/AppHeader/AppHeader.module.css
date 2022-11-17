@@ -6,7 +6,7 @@
     margin: 0 0 40px;
     padding: 0 320px;
     background: rgba(28, 28, 33, 1);
-}   
+}
 
 @media screen and (max-width: 1600px) {
     .header {
@@ -36,11 +36,9 @@
     line-height: 24px;
     font-weight: 400;
     font-style: normal;
-}
-
-.link {
     text-decoration: none;
 }
+
 
 .logotype {
     padding-left: 112px;
