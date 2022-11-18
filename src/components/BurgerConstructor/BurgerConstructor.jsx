@@ -43,7 +43,6 @@ const BurgerItem = ({
 
 const BurgerConstructor = ({ data }) => {
   const [state, setState] = useState(true);
-  const [isOpen, setIsOpen] = useState(true);
   const buns = data.find(function (element) {
     return element.type === "bun";
   });
