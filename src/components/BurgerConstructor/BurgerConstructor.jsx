@@ -112,4 +112,12 @@ BurgerConstructor.propTypes = {
   state: PropTypes.array.isRequired,
 };
 
+BurgerItem.propTypes = {
+  data: PropTypes.arrayOf(
+    PropTypes.shape({
+      state: PropTypes.string,
+    })
+  ),
+};
+
 export default BurgerConstructor;

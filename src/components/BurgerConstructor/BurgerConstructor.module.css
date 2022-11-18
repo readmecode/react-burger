@@ -15,7 +15,7 @@
     overflow-y: scroll;
     display: grid;
     gap: 16px;
-    min-height: 463px;
+    height: 463px;
 }
 
 .brgconstructor__box::-webkit-scrollbar {
