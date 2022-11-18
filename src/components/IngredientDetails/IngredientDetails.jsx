@@ -3,6 +3,7 @@ import ingrdetStyle from "./IngredientDetails.module.css";
 import PropTypes from "prop-types";
 
 const IngredientDetails = ({ ingrData }) => {
+  
   return (
     <div className={ingrdetStyle.ingr}>
       <h2 className={ingrdetStyle.ingr__title}>Детали ингредиента</h2>
@@ -37,6 +38,7 @@ const IngredientDetails = ({ ingrData }) => {
     </div>
   );
 };
+/*
 
 IngredientDetails.propTypes = {
   ingrData: PropTypes.arrayOf(
@@ -46,8 +48,12 @@ IngredientDetails.propTypes = {
       calories: PropTypes.number.isRequired,
       proteins: PropTypes.number.isRequired,
       fat: PropTypes.number.isRequired,
+      carbohydrates: PropTypes.number.isRequired,
     })
   ),
 };
+
+*/
+
 
 export default IngredientDetails;

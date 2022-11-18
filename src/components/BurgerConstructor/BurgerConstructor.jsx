@@ -12,6 +12,7 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const BurgerItem = ({ componentItem, bunType, isLocked, bunTypePart }) => {
+  console.log(componentItem);
   function isAvailItem() {
     if (bunType === "") {
       return <DragIcon type="primary" />;
@@ -98,24 +99,25 @@ const BurgerConstructor = ({ data }) => {
 };
 
 BurgerItem.propTypes = {
-  componentItem: PropTypes.arrayOf(
+  bunType: PropTypes.string,
+  isLocked: PropTypes.bool,
+  bunTypePart: PropTypes.string,
+  componentItem: PropTypes.objectOf(
     PropTypes.shape({
       name: PropTypes.string.isRequired,
       price: PropTypes.number.isRequired,
       image: PropTypes.string.isRequired,
+      _id: PropTypes.string,
     })
   ),
 };
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.array.isRequired,
-  state: PropTypes.array.isRequired,
-};
-
-BurgerItem.propTypes = {
   data: PropTypes.arrayOf(
     PropTypes.shape({
-      state: PropTypes.string,
+      name: PropTypes.string.isRequired,
+      price: PropTypes.number.isRequired,
+      image: PropTypes.string.isRequired,
     })
   ),
 };
