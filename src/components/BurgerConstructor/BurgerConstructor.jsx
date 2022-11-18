@@ -11,8 +11,15 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerItem = ({ componentItem, bunType, isLocked, bunTypePart }) => {
-  console.log(componentItem);
+const BurgerItem = ({
+  componentItem,
+  name,
+  price,
+  image,
+  bunType,
+  isLocked,
+  bunTypePart,
+}) => {
   function isAvailItem() {
     if (bunType === "") {
       return <DragIcon type="primary" />;
@@ -25,9 +32,9 @@ const BurgerItem = ({ componentItem, bunType, isLocked, bunTypePart }) => {
         <ConstructorElement
           type={bunType}
           isLocked={isLocked}
-          text={componentItem.name + bunTypePart}
-          price={componentItem.price}
-          thumbnail={componentItem.image}
+          text={name || componentItem.name + bunTypePart}
+          price={price || componentItem.price}
+          thumbnail={image || componentItem.image}
         />
       </div>
     </div>
@@ -35,17 +42,11 @@ const BurgerItem = ({ componentItem, bunType, isLocked, bunTypePart }) => {
 };
 
 const BurgerConstructor = ({ data }) => {
-  function findBun(itemId) {
-    const burgerData = data.find(function (element) {
-      return element._id === itemId;
-    });
-    return burgerData;
-  }
+  const [state, setState] = useState(true);
+  const [isOpen, setIsOpen] = useState(true);
   const buns = data.find(function (element) {
     return element.type === "bun";
   });
-
-  const [state, setState] = useState(true);
   return (
     <section className={`${constructStyle.brgconstructor} mt-25 ml-4`}>
       <BurgerItem
@@ -59,7 +60,10 @@ const BurgerConstructor = ({ data }) => {
           if (element.type !== "bun") {
             return (
               <BurgerItem
-                componentItem={findBun(element._id)}
+                componentItem={element._id}
+                image={element.image}
+                price={element.price}
+                name={element.name}
                 bunType={""}
                 isLocked={false}
                 bunTypePart={""}
@@ -89,11 +93,9 @@ const BurgerConstructor = ({ data }) => {
           Оформить заказ
         </Button>
       </div>
-      {setState && (
-        <Modal state={state} setState={setState}>
-          <OrderDetails />
-        </Modal>
-      )}
+      <Modal setState={setState} state={state}>
+        <OrderDetails />
+      </Modal>
     </section>
   );
 };

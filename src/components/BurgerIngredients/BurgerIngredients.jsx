@@ -31,7 +31,6 @@ const BurgerIngredients = ({ data }) => {
       </div>
 
       <div className={burgIngrStyle.burgingridients__menu}>
-
         <h2 className={burgIngrStyle.burgingridients__menu__title}>Булки</h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
           {data.map(
@@ -71,9 +70,6 @@ const BurgerIngredients = ({ data }) => {
               )
           )}
         </div>
-
-
-
 
         <h2 className={burgIngrStyle.burgingridients__menu__title}>Соусы</h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
@@ -150,7 +146,6 @@ const BurgerIngredients = ({ data }) => {
           ))}
         </div>
       </div>
-
       <Modal state={state} setState={setState}>
         <IngredientDetails ingrData={ingrData} />
       </Modal>
@@ -163,7 +158,7 @@ BurgerIngredients.propTypes = {
     PropTypes.shape({
       name: PropTypes.string.isRequired,
       price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired
+      image: PropTypes.string.isRequired,
     })
   ),
 };
