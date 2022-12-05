@@ -1,0 +1,111 @@
+.burgingridients {
+    width: 600px;
+    max-height: 756px;
+}
+
+.burgingridients__title {
+    font-family: "JetBrains Mono";
+    font-size: 36px;
+    line-height: 40px;
+    font-weight: 700;
+    font-style: normal;
+    display: flex;
+    align-items: center;
+    color: rgba(242, 242, 243, 1);
+    margin: 0;
+    padding: 0;
+    margin-bottom: 20px;
+}
+
+.burgingridients__menu {
+    height: 730px;
+    overflow-y: scroll;
+}
+
+.burgingridients__menu::-webkit-scrollbar {
+    width: 8px;
+    height: 700px;
+    background-color: rgba(19, 19, 22, 1);
+}
+
+.burgingridients__menu::-webkit-scrollbar-thumb {
+    width: 8px;
+    height: 492px;
+    background-color: rgba(133, 133, 173, 1);
+}
+
+.burgingridients__menu__title {
+    font-family: "JetBrains Mono";
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: 700;
+    font-style: normal;
+    color: rgba(242, 242, 243, 1);
+    margin: 0;
+    padding: 0;
+    margin-top: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.burgingridients__menu__box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-items: center;
+}
+
+.item {
+    display: flex;
+    flex-direction: column;
+    margin-top: 24px;
+    margin-bottom: 8px;
+    align-items: center;
+    position: relative;
+    width: 272px;
+    height: 208px;
+}
+
+.item__picture {
+    width: 240px;
+    height: 120px;
+    margin: 0;
+    padding: 0;
+}
+
+.item__value {
+    display: flex;
+    margin: 0;
+    padding: 0 8px;
+}
+
+.counter {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.value {
+    font-family: "Iceland";
+    font-size: 28px;
+    line-height: 24px;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+    color: rgba(242, 242, 243, 1);
+    margin: 0;
+    padding: 0;
+    margin-right: 8px;
+    margin-bottom: 8px;
+}
+
+.item__description {
+    font-family: "Jetbrains Mono";
+    font-size: 16px;
+    line-height: 24px;
+    font-weight: 400;
+    font-style: normal;
+    text-align: center;
+    color: rgba(242, 242, 243, 1);
+    margin: 0;
+    padding: 0;
+}
