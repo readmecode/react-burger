@@ -16,7 +16,6 @@ import {
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const BurgerItem = ({
-  componentItem,
   name,
   price,
   image,
@@ -40,9 +39,9 @@ const BurgerItem = ({
         <ConstructorElement
           type={bunType}
           isLocked={isLocked}
-          text={name || componentItem.name + bunTypePart}
-          price={price || componentItem.price}
-          thumbnail={image || componentItem.image}
+          text={name + bunTypePart}
+          price={price}
+          thumbnail={image}
           handleClose={() => removeItemConstruction(id)}
         />
       </div>
@@ -53,7 +52,7 @@ const BurgerItem = ({
 const BurgerConstructor = () => {
   const { construct, setConstruct, setOrderId, item, price, setPrice, idPost } =
     useContext(ConstructionContext);
-    console.log();
+  console.log();
 
   const sendData = (ingrElements) => {
     return fetch(`${BURGER_API}/orders`, {
@@ -77,24 +76,29 @@ const BurgerConstructor = () => {
     sourcePrice();
   }, [item, setPrice]);
 
-  const buns = item.find(function (element) {
-    return element.type === "bun";
-  });
-
   return (
     <section className={`${constructStyle.brgconstructor} mt-25 ml-4`}>
-      <BurgerItem
-        componentItem={buns}
-        bunType={"top"}
-        isLocked={true}
-        bunTypePart={" (верх)"}
-      />
+      {item.map(
+        (element) =>
+          element.type === "bun" && (
+            <BurgerItem
+              image={element.image}
+              price={element.price - 1/2*(element.price)}
+              name={element.name}
+              bunType={"top"}
+              isLocked={true}
+              bunTypePart={" (верх)"}
+              key={element._id}
+              id={element._id}
+            />
+          )
+      )}
+
       <div className={`${constructStyle.brgconstructor__box} pr-2`}>
         {item.map(
           (element) =>
             element.type !== "bun" && (
               <BurgerItem
-                componentItem={element._id}
                 image={element.image}
                 price={element.price}
                 name={element.name}
@@ -107,12 +111,21 @@ const BurgerConstructor = () => {
             )
         )}
       </div>
-      <BurgerItem
-        componentItem={buns}
-        bunType={"bottom"}
-        isLocked={true}
-        bunTypePart={" (низ)"}
-      />
+      {item.map(
+        (element) =>
+          element.type === "bun" && (
+            <BurgerItem
+              image={element.image}
+              price={element.price - 1/2*(element.price)}
+              name={element.name}
+              bunType={"bottom"}
+              isLocked={true}
+              bunTypePart={" (низ)"}
+              key={element._id}
+              id={element._id}
+            />
+          )
+      )}
       <div className={constructStyle.brgconstructor__total}>
         <div className={constructStyle.brgconstructor__total__order}>
           <p className={constructStyle.brgconstructor__amount}>{price}</p>

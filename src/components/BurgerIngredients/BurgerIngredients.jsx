@@ -46,7 +46,7 @@ const BurgerIngredients = () => {
           Булки
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {data.map(
+          {data.data.map(
             (item) =>
               item.type === "bun" && (
                 <button
@@ -93,7 +93,7 @@ const BurgerIngredients = () => {
           Соусы
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {data.map(
+          {data.data.map(
             (item) =>
               item.type === "sauce" && (
                 <button
@@ -140,7 +140,7 @@ const BurgerIngredients = () => {
           Начинки
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {data.map((item) => (
+          {data.data.map((item) => (
             <button
               key={item._id}
               onClick={() => {
