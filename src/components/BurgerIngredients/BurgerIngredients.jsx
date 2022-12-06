@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useContext, useRef } from "react";
+import { IngredientsContext } from "../../services/appContext";
+
 import burgIngrStyle from "./BurgerIngredients.module.css";
-import PropTypes from "prop-types";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
 
@@ -10,10 +11,17 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerIngredients = ({ data }) => {
+const BurgerIngredients = () => {
   const [current, setCurrent] = React.useState("one");
-  const [state, setState] = React.useState(true);
   const [ingrData, setIngrData] = React.useState({});
+
+  const { ingr, setIngr, data, addItem, includeIdPost } =
+    useContext(IngredientsContext);
+
+  const sectionBuns = useRef();
+  const sectionSauces = useRef();
+  const sectionMain = useRef();
+
   return (
     <section className={burgIngrStyle.burgingridients}>
       <h1 className={burgIngrStyle.burgingridients__title}>Соберите бургер</h1>
@@ -31,7 +39,12 @@ const BurgerIngredients = ({ data }) => {
       </div>
 
       <div className={burgIngrStyle.burgingridients__menu}>
-        <h2 className={burgIngrStyle.burgingridients__menu__title}>Булки</h2>
+        <h2
+          ref={sectionBuns}
+          className={burgIngrStyle.burgingridients__menu__title}
+        >
+          Булки
+        </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
           {data.map(
             (item) =>
@@ -39,9 +52,11 @@ const BurgerIngredients = ({ data }) => {
                 <button
                   key={item._id}
                   onClick={() => {
-                    setState(false);
+                    setIngr(false);
                     setIngrData(item);
                     setCurrent("one");
+                    addItem(item);
+                    includeIdPost(item._id);
                   }}
                 >
                   <div className={burgIngrStyle.item}>
@@ -71,7 +86,12 @@ const BurgerIngredients = ({ data }) => {
           )}
         </div>
 
-        <h2 className={burgIngrStyle.burgingridients__menu__title}>Соусы</h2>
+        <h2
+          ref={sectionSauces}
+          className={burgIngrStyle.burgingridients__menu__title}
+        >
+          Соусы
+        </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
           {data.map(
             (item) =>
@@ -79,9 +99,11 @@ const BurgerIngredients = ({ data }) => {
                 <button
                   key={item._id}
                   onClick={() => {
-                    setState(false);
+                    setIngr(false);
                     setIngrData(item);
                     setCurrent("two");
+                    addItem(item);
+                    includeIdPost(item._id);
                   }}
                 >
                   <div className={burgIngrStyle.item}>
@@ -111,15 +133,22 @@ const BurgerIngredients = ({ data }) => {
           )}
         </div>
 
-        <h2 className={burgIngrStyle.burgingridients__menu__title}>Начинки</h2>
+        <h2
+          ref={sectionMain}
+          className={burgIngrStyle.burgingridients__menu__title}
+        >
+          Начинки
+        </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
           {data.map((item) => (
             <button
               key={item._id}
               onClick={() => {
-                setState(false);
+                setIngr(false);
                 setIngrData(item);
                 setCurrent("three");
+                addItem(item);
+                includeIdPost(item._id);
               }}
             >
               <div className={burgIngrStyle.item}>
@@ -146,21 +175,11 @@ const BurgerIngredients = ({ data }) => {
           ))}
         </div>
       </div>
-      <Modal state={state} setState={setState}>
+      <Modal state={ingr} setState={setIngr}>
         <IngredientDetails ingrData={ingrData} />
       </Modal>
     </section>
   );
-};
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
-    })
-  ),
 };
 
 export default BurgerIngredients;

@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect } from "react";
+import { ConstructionContext } from "../../services/appContext";
+
 import constructStyle from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import PropTypes from "prop-types";
 import Modal from "../Modal/Modal";
+
+import { BURGER_API } from "../../utils/burger-api.js";
 
 import {
   Button,
@@ -19,12 +23,16 @@ const BurgerItem = ({
   bunType,
   isLocked,
   bunTypePart,
+  id,
 }) => {
+  const { removeItemConstruction } = useContext(ConstructionContext);
+
   function isAvailItem() {
     if (bunType === "") {
       return <DragIcon type="primary" />;
     }
   }
+
   return (
     <div className={constructStyle.brgconstructor__list}>
       {isAvailItem()}
@@ -35,17 +43,44 @@ const BurgerItem = ({
           text={name || componentItem.name + bunTypePart}
           price={price || componentItem.price}
           thumbnail={image || componentItem.image}
+          handleClose={() => removeItemConstruction(id)}
         />
       </div>
     </div>
   );
 };
 
-const BurgerConstructor = ({ data }) => {
-  const [state, setState] = useState(true);
-  const buns = data.find(function (element) {
+const BurgerConstructor = () => {
+  const { construct, setConstruct, setOrderId, item, price, setPrice, idPost } =
+    useContext(ConstructionContext);
+    console.log();
+
+  const sendData = (ingrElements) => {
+    return fetch(`${BURGER_API}/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ingredients: ingrElements,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => setOrderId(data.order.number));
+  };
+
+  useEffect(() => {
+    const sourcePrice = () => {
+      const total = item.reduce((prev, curr) => prev + curr.price, 0);
+      setPrice(total);
+    };
+    sourcePrice();
+  }, [item, setPrice]);
+
+  const buns = item.find(function (element) {
     return element.type === "bun";
   });
+
   return (
     <section className={`${constructStyle.brgconstructor} mt-25 ml-4`}>
       <BurgerItem
@@ -55,9 +90,9 @@ const BurgerConstructor = ({ data }) => {
         bunTypePart={" (верх)"}
       />
       <div className={`${constructStyle.brgconstructor__box} pr-2`}>
-        {data.map((element) => {
-          if (element.type !== "bun") {
-            return (
+        {item.map(
+          (element) =>
+            element.type !== "bun" && (
               <BurgerItem
                 componentItem={element._id}
                 image={element.image}
@@ -67,10 +102,10 @@ const BurgerConstructor = ({ data }) => {
                 isLocked={false}
                 bunTypePart={""}
                 key={element._id}
+                id={element._id}
               />
-            );
-          }
-        })}
+            )
+        )}
       </div>
       <BurgerItem
         componentItem={buns}
@@ -80,19 +115,22 @@ const BurgerConstructor = ({ data }) => {
       />
       <div className={constructStyle.brgconstructor__total}>
         <div className={constructStyle.brgconstructor__total__order}>
-          <p className={constructStyle.brgconstructor__amount}>610</p>
+          <p className={constructStyle.brgconstructor__amount}>{price}</p>
           <CurrencyIcon type="primary" />
         </div>
         <Button
           htmlType="button"
           type="primary"
           size="medium"
-          onClick={() => setState(false)}
+          onClick={() => {
+            setConstruct(false);
+            sendData(idPost);
+          }}
         >
           Оформить заказ
         </Button>
       </div>
-      <Modal setState={setState} state={state}>
+      <Modal setState={setConstruct} state={construct}>
         <OrderDetails />
       </Modal>
     </section>
