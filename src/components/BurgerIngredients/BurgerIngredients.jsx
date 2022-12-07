@@ -26,7 +26,7 @@ const BurgerIngredients = () => {
     <section className={burgIngrStyle.burgingridients}>
       <h1 className={burgIngrStyle.burgingridients__title}>Соберите бургер</h1>
 
-      <div style={{ display: "flex" }}>
+      <div className={burgIngrStyle.burgingridients__titlemenu}>
         <Tab value="one" active={current === "one"} onClick={setCurrent}>
           Булки
         </Tab>

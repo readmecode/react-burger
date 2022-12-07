@@ -1,6 +1,6 @@
 export const BURGER_API = "https://norma.nomoreparties.space/api";
 
-const checkRes = (res) => {
+export const checkRes = (res) => {
   if (res.ok) {
     return res.json();
   }

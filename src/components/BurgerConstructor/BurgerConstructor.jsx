@@ -7,6 +7,8 @@ import PropTypes from "prop-types";
 import Modal from "../Modal/Modal";
 
 import { BURGER_API } from "../../utils/burger-api.js";
+import { checkRes } from "../../utils/burger-api.js";
+import { ingredientType } from "../../utils/types";
 
 import {
   Button,
@@ -64,8 +66,11 @@ const BurgerConstructor = () => {
         ingredients: ingrElements,
       }),
     })
-      .then((res) => res.json())
-      .then((data) => setOrderId(data.order.number));
+      .then(checkRes)
+      .then((data) => setOrderId(data.order.number))
+      .catch((err) => {
+        console.log(`Ошибка: ${err}`);
+      });
   };
 
   useEffect(() => {
@@ -83,7 +88,7 @@ const BurgerConstructor = () => {
           element.type === "bun" && (
             <BurgerItem
               image={element.image}
-              price={element.price - 1/2*(element.price)}
+              price={element.price - (1 / 2) * element.price}
               name={element.name}
               bunType={"top"}
               isLocked={true}
@@ -116,7 +121,7 @@ const BurgerConstructor = () => {
           element.type === "bun" && (
             <BurgerItem
               image={element.image}
-              price={element.price - 1/2*(element.price)}
+              price={element.price - (1 / 2) * element.price}
               name={element.name}
               bunType={"bottom"}
               isLocked={true}
@@ -154,24 +159,11 @@ BurgerItem.propTypes = {
   bunType: PropTypes.string,
   isLocked: PropTypes.bool,
   bunTypePart: PropTypes.string,
-  componentItem: PropTypes.objectOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
-      _id: PropTypes.string,
-    })
-  ),
+  componentItem: PropTypes.arrayOf(ingredientType),
 };
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      name: PropTypes.string.isRequired,
-      price: PropTypes.number.isRequired,
-      image: PropTypes.string.isRequired,
-    })
-  ),
+  data: PropTypes.arrayOf(ingredientType),
 };
 
 export default BurgerConstructor;
