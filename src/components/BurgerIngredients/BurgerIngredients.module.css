@@ -17,6 +17,10 @@
     margin-bottom: 20px;
 }
 
+.burgingridients__titlemenu {
+    display: flex;
+}
+
 .burgingridients__menu {
     height: 730px;
     overflow-y: scroll;

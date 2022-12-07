@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import orderdtlsStyle from "./OrderDetails.module.css";
 import pic from "../../images/pic.png";
-import PropTypes from "prop-types";
+import { ConstructionContext } from "../../services/appContext";
 
 const OrderDetails = () => {
+  const { orderId } = useContext(ConstructionContext);
   return (
     <div className={orderdtlsStyle.ordrdetails}>
-      <h2 className={orderdtlsStyle.ordrdetails__title}>034536</h2>
+      <h2 className={orderdtlsStyle.ordrdetails__title}>{orderId}</h2>
       <p className={orderdtlsStyle.ordrdetails__subtitle}>
         идентификатор заказа
       </p>
