@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ReactDOM from "react-dom/client";
 import headerStyle from "./AppHeader.module.css";
 import {
   Logo,

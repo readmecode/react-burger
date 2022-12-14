@@ -37,6 +37,7 @@ const BurgerItem = ({
   id,
   pullIngr,
   index,
+  item
 }) => {
   const dispatch = useDispatch();
   const dragRef = useRef(null);
