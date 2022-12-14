@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
 import orderdtlsStyle from "./OrderDetails.module.css";
 import pic from "../../images/pic.png";
-import { ConstructionContext } from "../../services/appContext";
+import { useSelector } from "react-redux";
 
 const OrderDetails = () => {
-  const { orderId } = useContext(ConstructionContext);
+  const orderIdNumber = useSelector((state) => state.orderData.orderId);
   return (
     <div className={orderdtlsStyle.ordrdetails}>
-      <h2 className={orderdtlsStyle.ordrdetails__title}>{orderId}</h2>
+      <h2 className={orderdtlsStyle.ordrdetails__title}>{orderIdNumber}</h2>
       <p className={orderdtlsStyle.ordrdetails__subtitle}>
         идентификатор заказа
       </p>

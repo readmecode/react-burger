@@ -8,5 +8,5 @@ export const ingredientType = PropTypes.shape({
   proteins: PropTypes.number,
   fat: PropTypes.number,
   carbohydrates: PropTypes.number,
-  _id: PropTypes.string,
+  _id: PropTypes.string
 });

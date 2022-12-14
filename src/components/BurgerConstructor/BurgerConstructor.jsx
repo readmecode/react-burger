@@ -1,14 +1,24 @@
-import React, { useContext, useEffect } from "react";
-import { ConstructionContext } from "../../services/appContext";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import constructStyle from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import PropTypes from "prop-types";
 import Modal from "../Modal/Modal";
+import { removeItemConstr } from "../../services/actions/actions";
 
 import { BURGER_API } from "../../utils/burger-api.js";
 import { checkRes } from "../../utils/burger-api.js";
 import { ingredientType } from "../../utils/types";
+import {
+  getOrderTotal,
+  getOrderId,
+  getBun,
+  addItemConstr,
+  sortIngrs,
+} from "../../services/actions/actions";
+
+import { useDrop, useDrag } from "react-dnd";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   Button,
@@ -25,8 +35,54 @@ const BurgerItem = ({
   isLocked,
   bunTypePart,
   id,
+  pullIngr,
+  index,
 }) => {
-  const { removeItemConstruction } = useContext(ConstructionContext);
+  const dispatch = useDispatch();
+  const dragRef = useRef(null);
+  const [{ handlerId }, drop] = useDrop({
+    accept: "constrItem",
+    collect(monitor) {
+      return {
+        handlerId: monitor.getHandlerId(),
+      };
+    },
+    hover(item, monitor) {
+      if (!dragRef.current) {
+        return;
+      }
+      const dragIndex = item.index;
+      const hoverIndex = index;
+      if (dragIndex === hoverIndex) {
+        return;
+      }
+      const hoverBoundingRect = dragRef.current?.getBoundingClientRect();
+      const hoverMiddleY =
+        (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
+      const clientOffset = monitor.getClientOffset();
+      const hoverClientY = clientOffset.y - hoverBoundingRect.top;
+      if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
+        return;
+      }
+
+      if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
+        return;
+      }
+      pullIngr(dragIndex, hoverIndex);
+      item.index = hoverIndex;
+    },
+  });
+  const [{ isDragging }, drag] = useDrag({
+    type: "constrItem",
+    item: () => {
+      return { id, index };
+    },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+  const opacity = isDragging ? 0 : 1;
+  drag(drop(dragRef));
 
   function isAvailItem() {
     if (bunType === "") {
@@ -35,7 +91,12 @@ const BurgerItem = ({
   }
 
   return (
-    <div className={constructStyle.brgconstructor__list}>
+    <div
+      ref={dragRef}
+      handlerId={handlerId}
+      className={constructStyle.brgconstructor__list}
+      style={{ opacity }}
+    >
       {isAvailItem()}
       <div className={constructStyle.select}>
         <ConstructorElement
@@ -44,7 +105,7 @@ const BurgerItem = ({
           text={name + bunTypePart}
           price={price}
           thumbnail={image}
-          handleClose={() => removeItemConstruction(id)}
+          handleClose={() => dispatch(removeItemConstr(id))}
         />
       </div>
     </div>
@@ -52,9 +113,12 @@ const BurgerItem = ({
 };
 
 const BurgerConstructor = () => {
-  const { construct, setConstruct, setOrderId, item, price, setPrice, idPost } =
-    useContext(ConstructionContext);
-  console.log();
+  const [construct, setConstruct] = useState(true);
+  const dispatch = useDispatch();
+  const idPost = useSelector((state) => state.orderData.idPost);
+  const item = useSelector((state) => state.getConstr.construct);
+  const price = useSelector((state) => state.getConstr.price);
+  const data = useSelector((state) => state.getIngrData.data);
 
   const sendData = (ingrElements) => {
     return fetch(`${BURGER_API}/orders`, {
@@ -67,22 +131,45 @@ const BurgerConstructor = () => {
       }),
     })
       .then(checkRes)
-      .then((data) => setOrderId(data.order.number))
+      .then((data) => dispatch(getOrderId(data.order.number)))
       .catch((err) => {
         console.log(`Ошибка: ${err}`);
       });
   };
 
   useEffect(() => {
-    const sourcePrice = () => {
-      const total = item.reduce((prev, curr) => prev + curr.price, 0);
-      setPrice(total);
-    };
-    sourcePrice();
-  }, [item, setPrice]);
+    dispatch(getOrderTotal());
+  }, [item, dispatch]);
+
+  const [, drop] = useDrop({
+    accept: "ingrItem",
+    drop: (element) => {
+      element.type === "bun"
+        ? dispatch(getBun({ ...element }))
+        : dispatch(
+            addItemConstr(...data.filter((itm) => itm._id === element.id))
+          );
+    },
+  });
+
+  const pullIngr = useCallback(
+    (dragIndex, hoverIndex) => {
+      const dragItm = item[dragIndex];
+      if (dragItm) {
+        const newArr = [...item];
+        newArr.splice(dragIndex, 1);
+        newArr.splice(hoverIndex, 0, dragItm);
+        dispatch(sortIngrs(newArr));
+      }
+    },
+    [item, dispatch]
+  );
 
   return (
-    <section className={`${constructStyle.brgconstructor} mt-25 ml-4`}>
+    <section
+      className={`${constructStyle.brgconstructor} mt-25 ml-4`}
+      ref={drop}
+    >
       {item.map(
         (element) =>
           element.type === "bun" && (
@@ -112,6 +199,7 @@ const BurgerConstructor = () => {
                 bunTypePart={""}
                 key={element._id}
                 id={element._id}
+                pullIngr={pullIngr}
               />
             )
         )}
@@ -159,7 +247,6 @@ BurgerItem.propTypes = {
   bunType: PropTypes.string,
   isLocked: PropTypes.bool,
   bunTypePart: PropTypes.string,
-  componentItem: PropTypes.arrayOf(ingredientType),
 };
 
 BurgerConstructor.propTypes = {
