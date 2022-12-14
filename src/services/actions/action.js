@@ -17,14 +17,12 @@ export const getIngredients = (payload) => {
   };
 };
 
-export const getData = () => {
+export const getFlow = () => {
   return function (dispatch) {
     fetch(`${BURGER_API}/ingredients`)
-      .then(checkRes)
+      .then((res) => checkRes(res))
       .then((res) => dispatch(getIngredients(res.data)))
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch((res) => console.log(res));
   };
 };
 

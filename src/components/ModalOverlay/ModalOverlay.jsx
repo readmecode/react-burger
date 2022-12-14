@@ -1,8 +1,7 @@
 import React from "react";
 import mdloverlayStyle from "./ModalOverlay.module.css";
-import PropTypes from "prop-types";
 
-const ModalOverlay = ({ setState }) => {
+const ModalOverlay = ({ setState}) => {
   return (
     <div
       className={mdloverlayStyle.overlay}
@@ -10,9 +9,4 @@ const ModalOverlay = ({ setState }) => {
     ></div>
   );
 };
-
-ModalOverlay.propTypes = {
-  setState: PropTypes.func,
-};
-
 export default ModalOverlay;

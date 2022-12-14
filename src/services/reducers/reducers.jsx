@@ -11,7 +11,7 @@ import {
   GET_ORDER_TOTAL,
   SORT_INGRS,
   GET_BUN,
-} from "../actions/actions";
+} from "../actions/action";
 
 const ingrs = {
   data: [],
@@ -22,7 +22,7 @@ const getIngrs = (state = ingrs, action) => {
     case GET_INGRS: {
       return {
         ...state,
-        data: action.playload,
+        data: action.payload,
       };
     }
 
@@ -50,7 +50,7 @@ const getConstrItem = (state = constrInitial, action) => {
     case GET_BUN: {
       return {
         ...state,
-        constrBun: action.playload,
+        constrBun: action.payload,
       };
     }
 
@@ -58,7 +58,7 @@ const getConstrItem = (state = constrInitial, action) => {
       return {
         ...state,
         construct: state.construct.filter(
-          (item) => item.id !== action.playload
+          (item) => item.id !== action.payload
         ),
       };
     }
@@ -77,7 +77,7 @@ const getConstrItem = (state = constrInitial, action) => {
     case SORT_INGRS: {
       return {
         ...state,
-        construct: action.playload,
+        construct: action.payload,
       };
     }
 
@@ -96,7 +96,7 @@ const checkedIngr = (state = ingredientsData, action) => {
     case GET_INGR_DATA: {
       return {
         ...state,
-        ingrData: action.playload,
+        ingrData: action.payload,
       };
     }
     default: {
@@ -135,5 +135,5 @@ export const rootReducer = combineReducers({
   getIngrData: getIngrs,
   getConstr: getConstrItem,
   ingrSpecs: checkedIngr,
-  orderData: finishOrder,
+  order: finishOrder,
 });

@@ -4,7 +4,6 @@ import constructStyle from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import PropTypes from "prop-types";
 import Modal from "../Modal/Modal";
-import { removeItemConstr } from "../../services/actions/actions";
 
 import { BURGER_API } from "../../utils/burger-api.js";
 import { checkRes } from "../../utils/burger-api.js";
@@ -15,7 +14,8 @@ import {
   getBun,
   addItemConstr,
   sortIngrs,
-} from "../../services/actions/actions";
+  removeItemConstr,
+} from "../../services/actions/action";
 
 import { useDrop, useDrag } from "react-dnd";
 import { useDispatch, useSelector } from "react-redux";
@@ -37,7 +37,6 @@ const BurgerItem = ({
   id,
   pullIngr,
   index,
-  item
 }) => {
   const dispatch = useDispatch();
   const dragRef = useRef(null);
@@ -48,11 +47,11 @@ const BurgerItem = ({
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(item, monitor) {
+    hover(element, monitor) {
       if (!dragRef.current) {
         return;
       }
-      const dragIndex = item.index;
+      const dragIndex = element.index;
       const hoverIndex = index;
       if (dragIndex === hoverIndex) {
         return;
@@ -70,12 +69,12 @@ const BurgerItem = ({
         return;
       }
       pullIngr(dragIndex, hoverIndex);
-      item.index = hoverIndex;
+      element.index = hoverIndex;
     },
   });
   const [{ isDragging }, drag] = useDrag({
     type: "constrItem",
-    item: () => {
+    element: () => {
       return { id, index };
     },
     collect: (monitor) => ({
@@ -116,10 +115,11 @@ const BurgerItem = ({
 const BurgerConstructor = () => {
   const [construct, setConstruct] = useState(true);
   const dispatch = useDispatch();
-  const idPost = useSelector((state) => state.orderData.idPost);
-  const item = useSelector((state) => state.getConstr.construct);
+
+  const idPost = useSelector((state) => state.order.idPost);
+  const sector = useSelector((state) => state.getConstr.construct);
   const price = useSelector((state) => state.getConstr.price);
-  const data = useSelector((state) => state.getIngrData.data);
+  const datas = useSelector((state) => state.getIngrs.data);
 
   const sendData = (ingrElements) => {
     return fetch(`${BURGER_API}/orders`, {
@@ -131,39 +131,39 @@ const BurgerConstructor = () => {
         ingredients: ingrElements,
       }),
     })
-      .then(checkRes)
-      .then((data) => dispatch(getOrderId(data.order.number)))
-      .catch((err) => {
-        console.log(`Ошибка: ${err}`);
-      });
+      .then((res) => checkRes(res))
+      .then((datas) => dispatch(getOrderId(datas.order.number)))
+      .catch((res) => console.log(res));
   };
-
   useEffect(() => {
-    dispatch(getOrderTotal());
-  }, [item, dispatch]);
+    const sourcePrice = () => {
+      dispatch(getOrderTotal());
+    };
+    sourcePrice();
+  }, [sector, dispatch]);
 
   const [, drop] = useDrop({
     accept: "ingrItem",
-    drop: (element) => {
-      element.type === "bun"
-        ? dispatch(getBun({ ...element }))
+    drop: (item) => {
+      item.type === "bun"
+        ? dispatch(getBun({ ...item }))
         : dispatch(
-            addItemConstr(...data.filter((itm) => itm._id === element.id))
+            addItemConstr(...datas.filter((element) => element._id === item.id))
           );
     },
   });
 
   const pullIngr = useCallback(
     (dragIndex, hoverIndex) => {
-      const dragItm = item[dragIndex];
+      const dragItm = sector[dragIndex];
       if (dragItm) {
-        const newArr = [...item];
+        const newArr = [...sector];
         newArr.splice(dragIndex, 1);
         newArr.splice(hoverIndex, 0, dragItm);
         dispatch(sortIngrs(newArr));
       }
     },
-    [item, dispatch]
+    [sector, dispatch]
   );
 
   return (
@@ -171,8 +171,8 @@ const BurgerConstructor = () => {
       className={`${constructStyle.brgconstructor} mt-25 ml-4`}
       ref={drop}
     >
-      {item.map(
-        (element) =>
+      {sector.map(
+        (element, index) =>
           element.type === "bun" && (
             <BurgerItem
               image={element.image}
@@ -183,13 +183,14 @@ const BurgerConstructor = () => {
               bunTypePart={" (верх)"}
               key={element._id}
               id={element._id}
+              index={index}
             />
           )
       )}
 
       <div className={`${constructStyle.brgconstructor__box} pr-2`}>
-        {item.map(
-          (element) =>
+        {sector.map(
+          (element, index) =>
             element.type !== "bun" && (
               <BurgerItem
                 image={element.image}
@@ -201,12 +202,13 @@ const BurgerConstructor = () => {
                 key={element._id}
                 id={element._id}
                 pullIngr={pullIngr}
+                index={index}
               />
             )
         )}
       </div>
-      {item.map(
-        (element) =>
+      {sector.map(
+        (element, index) =>
           element.type === "bun" && (
             <BurgerItem
               image={element.image}
@@ -217,6 +219,7 @@ const BurgerConstructor = () => {
               bunTypePart={" (низ)"}
               key={element._id}
               id={element._id}
+              index={index}
             />
           )
       )}
@@ -251,7 +254,7 @@ BurgerItem.propTypes = {
 };
 
 BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientType),
+  datas: PropTypes.arrayOf(ingredientType),
 };
 
 export default BurgerConstructor;

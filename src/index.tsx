@@ -8,7 +8,6 @@ import { Provider } from "react-redux";
 import { rootReducer } from "./services/reducers/reducers";
 import thunk from "redux-thunk";
 
-
 const enhancer = applyMiddleware(thunk);
 const store = createStore(rootReducer, compose(enhancer));
 

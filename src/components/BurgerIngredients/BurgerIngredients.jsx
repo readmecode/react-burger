@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useDrag } from "react-dnd";
@@ -6,11 +6,7 @@ import { useDrag } from "react-dnd";
 import burgIngrStyle from "./BurgerIngredients.module.css";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
-import {
-  getData,
-  getIngrId,
-  getIngrData,
-} from "../../services/actions/actions";
+import { getFlow, getIngrId, getIngrData } from "../../services/actions/action";
 
 import {
   Tab,
@@ -18,11 +14,11 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerIngredients = ({item}) => {
+const BurgerIngredients = ({content}) => {
   const [current, setCurrent] = useState("one");
   const [ingr, setIngr] = useState(true);
 
-  const data = useSelector((state) => state.getIngrData.data);
+  const datas = useSelector((state) => state.getIngrs.data);
 
   const sectionBuns = useRef();
   const sectionSauces = useRef();
@@ -30,25 +26,25 @@ const BurgerIngredients = ({item}) => {
 
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getData());
+    dispatch(getFlow());
   }, [dispatch]);
 
   const selectBuns = useSelector((state) => state.getConstr.constrBun);
   const selectedItem = useSelector((state) => state.getConstr.construct).filter(
-    (itm) => item._id === itm._id
+    (element) => content._id === element._id
   );
 
   const [{ isDragging }, dragRef] = useDrag({
     type: "constrItem",
-    item: item,
+    content: content,
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
   const checkCount = useMemo(() => {
-    if (item.type === "bun") {
-      return selectBuns && selectBuns._id === item._id ? 2 : 0;
+    if (content.type === "bun") {
+      return selectBuns && selectBuns._id === content._id ? 2 : 0;
     }
     return selectedItem.length;
   });
@@ -79,16 +75,16 @@ const BurgerIngredients = ({item}) => {
           Булки
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {data.map(
-            (item) =>
-              item.type === "bun" && (
+          {datas.map(
+            (content) =>
+              content.type === "bun" && (
                 <button
-                  key={item._id}
+                  key={content._id}
                   onClick={() => {
                     setIngr(false);
                     setCurrent("one");
-                    dispatch(getIngrData(item));
-                    dispatch(getIngrId(item._id));
+                    dispatch(getIngrData(content));
+                    dispatch(getIngrId(content._id));
                   }}
                 >
                   <div
@@ -97,8 +93,8 @@ const BurgerIngredients = ({item}) => {
                     style={{ opacity }}
                   >
                     <img
-                      src={item.image}
-                      alt={item.name}
+                      src={content.image}
+                      alt={content.name}
                       className={burgIngrStyle.item__picture}
                     />
                     {checkCount === 0 ? null : (
@@ -110,14 +106,14 @@ const BurgerIngredients = ({item}) => {
                     )}
 
                     <div className={burgIngrStyle.item__value}>
-                      <p className={burgIngrStyle.value}>{item.price}</p>
+                      <p className={burgIngrStyle.value}>{content.price}</p>
                       <CurrencyIcon
                         className={burgIngrStyle.item__logo}
                         type="primary"
                       />
                     </div>
                     <p className={burgIngrStyle.item__description}>
-                      {item.name}
+                      {content.name}
                     </p>
                   </div>
                 </button>
@@ -132,16 +128,16 @@ const BurgerIngredients = ({item}) => {
           Соусы
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {data.map(
-            (item) =>
-              item.type === "sauce" && (
+          {datas.map(
+            (content) =>
+              content.type === "sauce" && (
                 <button
-                  key={item._id}
+                  key={content._id}
                   onClick={() => {
                     setIngr(false);
                     setCurrent("two");
-                    dispatch(getIngrData(item));
-                    dispatch(getIngrId(item._id));
+                    dispatch(getIngrData(content));
+                    dispatch(getIngrId(content._id));
                   }}
                 >
                   <div
@@ -150,8 +146,8 @@ const BurgerIngredients = ({item}) => {
                     style={{ opacity }}
                   >
                     <img
-                      src={item.image}
-                      alt={item.name}
+                      src={content.image}
+                      alt={content.name}
                       className={burgIngrStyle.item__picture}
                     />
                     {checkCount === 0 ? null : (
@@ -162,14 +158,14 @@ const BurgerIngredients = ({item}) => {
                       />
                     )}
                     <div className={burgIngrStyle.item__value}>
-                      <p className={burgIngrStyle.value}>{item.price}</p>
+                      <p className={burgIngrStyle.value}>{content.price}</p>
                       <CurrencyIcon
                         className={burgIngrStyle.item__logo}
                         type="primary"
                       />
                     </div>
                     <p className={burgIngrStyle.item__description}>
-                      {item.name}
+                      {content.name}
                     </p>
                   </div>
                 </button>
@@ -184,16 +180,16 @@ const BurgerIngredients = ({item}) => {
           Начинки
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {data.map(
-            (item) =>
-              item.type === "main" && (
+          {datas.map(
+            (content) =>
+              content.type === "main" && (
                 <button
-                  key={item._id}
+                  key={content._id}
                   onClick={() => {
                     setIngr(false);
                     setCurrent("three");
-                    dispatch(getIngrData(item));
-                    dispatch(getIngrId(item._id));
+                    dispatch(getIngrData(content));
+                    dispatch(getIngrId(content._id));
                   }}
                 >
                   <div
@@ -202,8 +198,8 @@ const BurgerIngredients = ({item}) => {
                     style={{ opacity }}
                   >
                     <img
-                      src={item.image}
-                      alt={item.name}
+                      src={content.image}
+                      alt={content.name}
                       className={burgIngrStyle.item__picture}
                     />
                     {checkCount === 0 ? null : (
@@ -214,14 +210,14 @@ const BurgerIngredients = ({item}) => {
                       />
                     )}
                     <div className={burgIngrStyle.item__value}>
-                      <p className={burgIngrStyle.value}>{item.price}</p>
+                      <p className={burgIngrStyle.value}>{content.price}</p>
                       <CurrencyIcon
                         className={burgIngrStyle.item__logo}
                         type="primary"
                       />
                     </div>
                     <p className={burgIngrStyle.item__description}>
-                      {item.name}
+                      {content.name}
                     </p>
                   </div>
                 </button>

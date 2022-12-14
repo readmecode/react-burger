@@ -4,7 +4,7 @@ import pic from "../../images/pic.png";
 import { useSelector } from "react-redux";
 
 const OrderDetails = () => {
-  const orderIdNumber = useSelector((state) => state.orderData.orderId);
+  const orderIdNumber = useSelector((state) => state.order.orderId);
   return (
     <div className={orderdtlsStyle.ordrdetails}>
       <h2 className={orderdtlsStyle.ordrdetails__title}>{orderIdNumber}</h2>
