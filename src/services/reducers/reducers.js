@@ -68,7 +68,7 @@ const getConstrItem = (state = constrInitial, action) => {
         ...state,
         price: state.construct.reduce(
           (prev, curr) =>
-            current.type === "bun" ? prev + curr.price : prev + curr.price,
+            curr.type === "bun" ? prev + curr.price : prev + curr.price,
           0
         ),
       };

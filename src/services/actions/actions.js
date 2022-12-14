@@ -1,14 +1,14 @@
 import { BURGER_API, checkRes } from "../../utils/burger-api";
 
-const GET_INGRS = "GET_INGRS";
-const GET_INGR_ID = "GET_INGR_ID";
-const REMOVE_ITEM = "REMOVE_ITEM";
-const GET_ITEM = "GET_ITEM";
-const GET_INGR_DATA = "GET_INGR_DATA";
-const GET_ORDER_ID = "GET_ORDER_ID";
-const GET_ORDER_TOTAL = "GET_ORDER_TOTAL";
-const SORT_INGRS = "SORT_INGRS";
-const GET_BUN = "GET_BUN";
+export const GET_INGRS = "GET_INGRS";
+export const GET_INGR_ID = "GET_INGR_ID";
+export const REMOVE_ITEM = "REMOVE_ITEM";
+export const GET_ITEM = "GET_ITEM";
+export const GET_INGR_DATA = "GET_INGR_DATA";
+export const GET_ORDER_ID = "GET_ORDER_ID";
+export const GET_ORDER_TOTAL = "GET_ORDER_TOTAL";
+export const SORT_INGRS = "SORT_INGRS";
+export const GET_BUN = "GET_BUN";
 
 export const getIngredients = (payload) => {
   return {
