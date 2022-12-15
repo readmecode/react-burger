@@ -18,7 +18,7 @@ const BurgerIngredients = ({content}) => {
   const [current, setCurrent] = useState("one");
   const [ingr, setIngr] = useState(true);
 
-  const datas = useSelector((state) => state.getIngrs.data);
+  const data = useSelector((state) => state.getIngrs.data);
 
   const sectionBuns = useRef();
   const sectionSauces = useRef();
@@ -42,12 +42,7 @@ const BurgerIngredients = ({content}) => {
     }),
   });
 
-  const checkCount = useMemo(() => {
-    if (content.type === "bun") {
-      return selectBuns && selectBuns._id === content._id ? 2 : 0;
-    }
-    return selectedItem.length;
-  });
+
 
   const opacity = isDragging ? 0.3 : 1;
 
@@ -75,7 +70,7 @@ const BurgerIngredients = ({content}) => {
           Булки
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {datas.map(
+          {data.data.map(
             (content) =>
               content.type === "bun" && (
                 <button
@@ -97,13 +92,7 @@ const BurgerIngredients = ({content}) => {
                       alt={content.name}
                       className={burgIngrStyle.item__picture}
                     />
-                    {checkCount === 0 ? null : (
-                      <Counter
-                        className={burgIngrStyle.counter}
-                        count={checkCount}
-                        size="default"
-                      />
-                    )}
+                    
 
                     <div className={burgIngrStyle.item__value}>
                       <p className={burgIngrStyle.value}>{content.price}</p>
@@ -128,7 +117,7 @@ const BurgerIngredients = ({content}) => {
           Соусы
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {datas.map(
+          {data.data.map(
             (content) =>
               content.type === "sauce" && (
                 <button
@@ -150,13 +139,7 @@ const BurgerIngredients = ({content}) => {
                       alt={content.name}
                       className={burgIngrStyle.item__picture}
                     />
-                    {checkCount === 0 ? null : (
-                      <Counter
-                        className={burgIngrStyle.counter}
-                        count={checkCount}
-                        size="default"
-                      />
-                    )}
+                   
                     <div className={burgIngrStyle.item__value}>
                       <p className={burgIngrStyle.value}>{content.price}</p>
                       <CurrencyIcon
@@ -180,7 +163,7 @@ const BurgerIngredients = ({content}) => {
           Начинки
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {datas.map(
+          {data.data.map(
             (content) =>
               content.type === "main" && (
                 <button
@@ -202,13 +185,7 @@ const BurgerIngredients = ({content}) => {
                       alt={content.name}
                       className={burgIngrStyle.item__picture}
                     />
-                    {checkCount === 0 ? null : (
-                      <Counter
-                        className={burgIngrStyle.counter}
-                        count={checkCount}
-                        size="default"
-                      />
-                    )}
+                   
                     <div className={burgIngrStyle.item__value}>
                       <p className={burgIngrStyle.value}>{content.price}</p>
                       <CurrencyIcon

@@ -119,7 +119,7 @@ const BurgerConstructor = () => {
   const idPost = useSelector((state) => state.order.idPost);
   const sector = useSelector((state) => state.getConstr.construct);
   const price = useSelector((state) => state.getConstr.price);
-  const datas = useSelector((state) => state.getIngrs.data);
+  const data = useSelector((state) => state.getIngrs.data);
 
   const sendData = (ingrElements) => {
     return fetch(`${BURGER_API}/orders`, {
@@ -132,7 +132,7 @@ const BurgerConstructor = () => {
       }),
     })
       .then((res) => checkRes(res))
-      .then((datas) => dispatch(getOrderId(datas.order.number)))
+      .then((data) => dispatch(getOrderId(data.order.number)))
       .catch((res) => console.log(res));
   };
   useEffect(() => {
@@ -148,7 +148,7 @@ const BurgerConstructor = () => {
       item.type === "bun"
         ? dispatch(getBun({ ...item }))
         : dispatch(
-            addItemConstr(...datas.filter((element) => element._id === item.id))
+            addItemConstr(...data.filter((element) => element._id === item.id))
           );
     },
   });
@@ -254,7 +254,7 @@ BurgerItem.propTypes = {
 };
 
 BurgerConstructor.propTypes = {
-  datas: PropTypes.arrayOf(ingredientType),
+  data: PropTypes.arrayOf(ingredientType),
 };
 
 export default BurgerConstructor;
