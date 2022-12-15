@@ -36,6 +36,8 @@ const constrInitial = {
   construct: [],
   constrBun: [],
   price: 0,
+  bunOrder: 0,
+  totalOrder: 0,
 };
 
 const getConstrItem = (state = constrInitial, action) => {
@@ -57,9 +59,7 @@ const getConstrItem = (state = constrInitial, action) => {
     case REMOVE_ITEM: {
       return {
         ...state,
-        construct: state.construct.filter(
-          (item) => item.id !== action.payload
-        ),
+        construct: state.construct.filter((itm) => itm.id !== action.payload),
       };
     }
 

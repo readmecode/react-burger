@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 
 import constructStyle from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
@@ -31,15 +31,16 @@ const BurgerItem = ({
   name,
   price,
   image,
-  bunType,
-  isLocked,
-  bunTypePart,
-  id,
+  position,
+  locked,
+  idItm,
   pullIngr,
   index,
 }) => {
   const dispatch = useDispatch();
-  const dragRef = useRef(null);
+
+  const ref = useRef(null);
+
   const [{ handlerId }, drop] = useDrop({
     accept: "constrItem",
     collect(monitor) {
@@ -47,16 +48,16 @@ const BurgerItem = ({
         handlerId: monitor.getHandlerId(),
       };
     },
-    hover(element, monitor) {
-      if (!dragRef.current) {
+    hover(item, monitor) {
+      if (!ref.current) {
         return;
       }
-      const dragIndex = element.index;
+      const dragIndex = item.index;
       const hoverIndex = index;
       if (dragIndex === hoverIndex) {
         return;
       }
-      const hoverBoundingRect = dragRef.current?.getBoundingClientRect();
+      const hoverBoundingRect = ref.current?.getBoundingClientRect();
       const hoverMiddleY =
         (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2;
       const clientOffset = monitor.getClientOffset();
@@ -69,43 +70,43 @@ const BurgerItem = ({
         return;
       }
       pullIngr(dragIndex, hoverIndex);
-      element.index = hoverIndex;
+      item.index = hoverIndex;
     },
   });
   const [{ isDragging }, drag] = useDrag({
     type: "constrItem",
-    element: () => {
-      return { id, index };
+    item: () => {
+      return { idItm, index };
     },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
   const opacity = isDragging ? 0 : 1;
-  drag(drop(dragRef));
+  drag(drop(ref));
 
   function isAvailItem() {
-    if (bunType === "") {
+    if (position === "") {
       return <DragIcon type="primary" />;
     }
   }
 
   return (
     <div
-      ref={dragRef}
-      handlerId={handlerId}
+      ref={ref}
+      data-handler-id={handlerId}
       className={constructStyle.brgconstructor__list}
       style={{ opacity }}
     >
       {isAvailItem()}
       <div className={constructStyle.select}>
         <ConstructorElement
-          type={bunType}
-          isLocked={isLocked}
-          text={name + bunTypePart}
+          type={position}
+          isLocked={locked}
+          text={name}
           price={price}
           thumbnail={image}
-          handleClose={() => dispatch(removeItemConstr(id))}
+          handleClose={() => dispatch(removeItemConstr(idItm))}
         />
       </div>
     </div>
@@ -120,6 +121,7 @@ const BurgerConstructor = () => {
   const sector = useSelector((state) => state.getConstr.construct);
   const price = useSelector((state) => state.getConstr.price);
   const data = useSelector((state) => state.getIngredData.data);
+  const bunItem = useSelector((state) => state.getConstr.constrBun);
 
   const sendData = (ingrElements) => {
     return fetch(`${BURGER_API}/orders`, {
@@ -143,24 +145,34 @@ const BurgerConstructor = () => {
   }, [sector, dispatch]);
 
   const [, drop] = useDrop({
-    accept: "ingrItem",
+    accept: "constrItem",
     drop: (item) => {
-      item.type === "bun"
-        ? dispatch(getBun({ ...item }))
-        : dispatch(
-            addItemConstr(...data.filter((element) => element._id === item.id))
-          );
+      item.type === "bun" ? dispatch(getBun({ ...item })) : addSection(item);
     },
   });
 
+  const addSection = (item) => {
+    dispatch(addItemConstr(...data.filter((itm) => itm._id === item.id)));
+  };
+
+  const totalOrder = useMemo(() => {
+    let totalOrder = 0;
+    totalOrder = totalOrder + price;
+    if (isNaN(bunItem.price)) {
+      bunItem.price = 0;
+    }
+    const bunOrder = bunItem.price;
+    return (totalOrder = totalOrder + bunOrder);
+  }, [bunItem, price]);
+
   const pullIngr = useCallback(
     (dragIndex, hoverIndex) => {
-      const dragItm = sector[dragIndex];
-      if (dragItm) {
-        const newArr = [...sector];
-        newArr.splice(dragIndex, 1);
-        newArr.splice(hoverIndex, 0, dragItm);
-        dispatch(sortIngrs(newArr));
+      const dragItem = sector[dragIndex];
+      if (dragItem) {
+        const newArray = [...sector];
+        newArray.splice(dragIndex, 1);
+        newArray.splice(hoverIndex, 0, dragItem);
+        dispatch(sortIngrs(newArray));
       }
     },
     [sector, dispatch]
@@ -171,61 +183,48 @@ const BurgerConstructor = () => {
       className={`${constructStyle.brgconstructor} mt-25 ml-4`}
       ref={drop}
     >
-      {sector.map(
-        (element, index) =>
-          element.type === "bun" && (
-            <BurgerItem
-              image={element.image}
-              price={element.price - (1 / 2) * element.price}
-              name={element.name}
-              bunType={"top"}
-              isLocked={true}
-              bunTypePart={" (верх)"}
-              key={element._id}
-              id={element._id}
-              index={index}
-            />
-          )
+      {bunItem.length !== 0 && (
+        <BurgerItem
+          position={"top"}
+          locked={true}
+          name={bunItem.name + "верх"}
+          image={bunItem.image}
+          price={bunItem.price / 2}
+          key={bunItem.id}
+        />
       )}
 
       <div className={`${constructStyle.brgconstructor__box} pr-2`}>
         {sector.map(
-          (element, index) =>
-            element.type !== "bun" && (
+          (specs, index) =>
+            specs.type !== "bun" && (
               <BurgerItem
-                image={element.image}
-                price={element.price}
-                name={element.name}
-                bunType={""}
-                isLocked={false}
-                bunTypePart={""}
-                key={element._id}
-                id={element._id}
-                pullIngr={pullIngr}
+                locked={false}
+                name={specs.name}
+                image={specs.image}
+                price={specs.price}
+                key={specs.id}
                 index={index}
+                idItm={specs.id}
+                pullIngr={pullIngr}
+                position={""}
               />
             )
         )}
       </div>
-      {sector.map(
-        (element, index) =>
-          element.type === "bun" && (
-            <BurgerItem
-              image={element.image}
-              price={element.price - (1 / 2) * element.price}
-              name={element.name}
-              bunType={"bottom"}
-              isLocked={true}
-              bunTypePart={" (низ)"}
-              key={element._id}
-              id={element._id}
-              index={index}
-            />
-          )
+      {bunItem.length !== 0 && (
+        <BurgerItem
+          position={"bottom"}
+          locked={true}
+          name={bunItem.name + "низ"}
+          image={bunItem.image}
+          price={bunItem.price / 2}
+          key={bunItem.id}
+        />
       )}
       <div className={constructStyle.brgconstructor__total}>
         <div className={constructStyle.brgconstructor__total__order}>
-          <p className={constructStyle.brgconstructor__amount}>{price}</p>
+          <p className={constructStyle.brgconstructor__amount}>{totalOrder}</p>
           <CurrencyIcon type="primary" />
         </div>
         <Button
@@ -245,12 +244,6 @@ const BurgerConstructor = () => {
       </Modal>
     </section>
   );
-};
-
-BurgerItem.propTypes = {
-  bunType: PropTypes.string,
-  isLocked: PropTypes.bool,
-  bunTypePart: PropTypes.string,
 };
 
 BurgerConstructor.propTypes = {
