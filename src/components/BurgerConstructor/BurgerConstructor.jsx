@@ -119,7 +119,7 @@ const BurgerConstructor = () => {
   const idPost = useSelector((state) => state.order.idPost);
   const sector = useSelector((state) => state.getConstr.construct);
   const price = useSelector((state) => state.getConstr.price);
-  const data = useSelector((state) => state.getIngrs.data);
+  const data = useSelector((state) => state.getIngredData.data);
 
   const sendData = (ingrElements) => {
     return fetch(`${BURGER_API}/orders`, {

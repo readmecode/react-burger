@@ -14,12 +14,52 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerIngredients = ({content}) => {
+const BurgerIngredient = ({image, price, item, name}) => {
+  const selectBuns = useSelector((state) => state.getConstr.constrBun);
+  const selectedItem = useSelector((state) => state.getConstr.construct).filter(
+    (itm) => item._id === itm._id
+  );
+
+  const [{ isDragging }, dragRef] = useDrag({
+    type: "constrItem",
+    item: item,
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const opacity = isDragging ? 0.3 : 1;
+
+  const checkCount = useMemo(() => {
+    if (item.type === "bun") {
+      return selectBuns && selectBuns._id === item._id ? 2 : 0;
+    }
+    return selectedItem.length;
+  });
+
+  return (
+    <div className={burgIngrStyle.item} ref={dragRef} style={{ opacity }}>
+      <img src={image} alt={name} className={burgIngrStyle.item__picture} />
+      {checkCount === 0 ? null : (
+        <Counter
+          className={burgIngrStyle.counter}
+          count={checkCount}
+          size="default"
+        />
+      )}
+      <div className={burgIngrStyle.item__value}>
+        <p className={burgIngrStyle.value}>{price}</p>
+        <CurrencyIcon className={burgIngrStyle.item__logo} type="primary" />
+      </div>
+      <p className={burgIngrStyle.item__description}>{name}</p>
+    </div>
+  );
+};
+
+const BurgerIngredients = () => {
+  const data = useSelector((state) => state.getIngredData.data);
   const [current, setCurrent] = useState("one");
   const [ingr, setIngr] = useState(true);
-
-  const data = useSelector((state) => state.getIngrs.data);
-
   const sectionBuns = useRef();
   const sectionSauces = useRef();
   const sectionMain = useRef();
@@ -28,23 +68,6 @@ const BurgerIngredients = ({content}) => {
   useEffect(() => {
     dispatch(getFlow());
   }, [dispatch]);
-
-  const selectBuns = useSelector((state) => state.getConstr.constrBun);
-  const selectedItem = useSelector((state) => state.getConstr.construct).filter(
-    (element) => content._id === element._id
-  );
-
-  const [{ isDragging }, dragRef] = useDrag({
-    type: "constrItem",
-    content: content,
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
-    }),
-  });
-
-
-
-  const opacity = isDragging ? 0.3 : 1;
 
   return (
     <section className={burgIngrStyle.burgingridients}>
@@ -70,7 +93,7 @@ const BurgerIngredients = ({content}) => {
           Булки
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {data.data.map(
+          {data.map(
             (content) =>
               content.type === "bun" && (
                 <button
@@ -82,29 +105,12 @@ const BurgerIngredients = ({content}) => {
                     dispatch(getIngrId(content._id));
                   }}
                 >
-                  <div
-                    className={burgIngrStyle.item}
-                    ref={dragRef}
-                    style={{ opacity }}
-                  >
-                    <img
-                      src={content.image}
-                      alt={content.name}
-                      className={burgIngrStyle.item__picture}
-                    />
-                    
-
-                    <div className={burgIngrStyle.item__value}>
-                      <p className={burgIngrStyle.value}>{content.price}</p>
-                      <CurrencyIcon
-                        className={burgIngrStyle.item__logo}
-                        type="primary"
-                      />
-                    </div>
-                    <p className={burgIngrStyle.item__description}>
-                      {content.name}
-                    </p>
-                  </div>
+                  <BurgerIngredient
+                    name={content.name}
+                    price={content.price}
+                    image={content.image}
+                    item={content}
+                  />
                 </button>
               )
           )}
@@ -117,7 +123,7 @@ const BurgerIngredients = ({content}) => {
           Соусы
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {data.data.map(
+          {data.map(
             (content) =>
               content.type === "sauce" && (
                 <button
@@ -129,28 +135,12 @@ const BurgerIngredients = ({content}) => {
                     dispatch(getIngrId(content._id));
                   }}
                 >
-                  <div
-                    className={burgIngrStyle.item}
-                    ref={dragRef}
-                    style={{ opacity }}
-                  >
-                    <img
-                      src={content.image}
-                      alt={content.name}
-                      className={burgIngrStyle.item__picture}
-                    />
-                   
-                    <div className={burgIngrStyle.item__value}>
-                      <p className={burgIngrStyle.value}>{content.price}</p>
-                      <CurrencyIcon
-                        className={burgIngrStyle.item__logo}
-                        type="primary"
-                      />
-                    </div>
-                    <p className={burgIngrStyle.item__description}>
-                      {content.name}
-                    </p>
-                  </div>
+                  <BurgerIngredient
+                    name={content.name}
+                    price={content.price}
+                    image={content.image}
+                    item={content}
+                  />
                 </button>
               )
           )}
@@ -163,7 +153,7 @@ const BurgerIngredients = ({content}) => {
           Начинки
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {data.data.map(
+          {data.map(
             (content) =>
               content.type === "main" && (
                 <button
@@ -175,28 +165,12 @@ const BurgerIngredients = ({content}) => {
                     dispatch(getIngrId(content._id));
                   }}
                 >
-                  <div
-                    className={burgIngrStyle.item}
-                    ref={dragRef}
-                    style={{ opacity }}
-                  >
-                    <img
-                      src={content.image}
-                      alt={content.name}
-                      className={burgIngrStyle.item__picture}
-                    />
-                   
-                    <div className={burgIngrStyle.item__value}>
-                      <p className={burgIngrStyle.value}>{content.price}</p>
-                      <CurrencyIcon
-                        className={burgIngrStyle.item__logo}
-                        type="primary"
-                      />
-                    </div>
-                    <p className={burgIngrStyle.item__description}>
-                      {content.name}
-                    </p>
-                  </div>
+                  <BurgerIngredient
+                    name={content.name}
+                    price={content.price}
+                    image={content.image}
+                    item={content}
+                  />
                 </button>
               )
           )}

@@ -132,7 +132,7 @@ const finishOrder = (state = orderInitial, action) => {
 };
 
 export const rootReducer = combineReducers({
-  getIngrData: getIngrs,
+  getIngredData: getIngrs,
   getConstr: getConstrItem,
   ingrSpecs: checkedIngr,
   order: finishOrder,
