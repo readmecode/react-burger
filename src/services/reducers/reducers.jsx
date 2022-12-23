@@ -1,5 +1,4 @@
 import { combineReducers } from "redux";
-import { v4 as uuidv4 } from "uuid";
 
 import {
   GET_INGRS,
@@ -45,7 +44,7 @@ const getConstrItem = (state = constrInitial, action) => {
     case GET_ITEM: {
       return {
         ...state,
-        construct: [...state.construct, { ...action.payload, id: uuidv4() }],
+        construct: [...state.construct, action.payload],
       };
     }
 

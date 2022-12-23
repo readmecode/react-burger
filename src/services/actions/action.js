@@ -1,4 +1,5 @@
 import { BURGER_API, checkRes } from "../../utils/burger-api";
+import { v4 as uuidv4 } from "uuid";
 
 export const GET_INGRS = "GET_INGRS";
 export const GET_INGR_ID = "GET_INGR_ID";
@@ -9,6 +10,23 @@ export const GET_ORDER_ID = "GET_ORDER_ID";
 export const GET_ORDER_TOTAL = "GET_ORDER_TOTAL";
 export const SORT_INGRS = "SORT_INGRS";
 export const GET_BUN = "GET_BUN";
+
+export const sendData = (ingrElements) => {
+  return function (dispatch) {
+    fetch(`${BURGER_API}/orders`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ingredients: ingrElements,
+      }),
+    })
+      .then((res) => checkRes(res))
+      .then((data) => dispatch(getOrderId(data.order.number)))
+      .catch((res) => console.log(res));
+  };
+};
 
 export const getIngredients = (payload) => {
   return {
@@ -27,9 +45,10 @@ export const getFlow = () => {
 };
 
 export const addItemConstr = (payload) => {
+  const id = uuidv4();
   return {
     type: GET_ITEM,
-    payload,
+    payload: { ...payload, id },
   };
 };
 

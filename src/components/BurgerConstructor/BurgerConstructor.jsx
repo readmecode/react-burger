@@ -4,9 +4,8 @@ import constructStyle from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
 import PropTypes from "prop-types";
 import Modal from "../Modal/Modal";
+import { sendData } from "../../services/actions/action";
 
-import { BURGER_API } from "../../utils/burger-api.js";
-import { checkRes } from "../../utils/burger-api.js";
 import { ingredientType } from "../../utils/types";
 import {
   getOrderTotal,
@@ -15,6 +14,7 @@ import {
   addItemConstr,
   sortIngrs,
   removeItemConstr,
+  getIngrId,
 } from "../../services/actions/action";
 
 import { useDrop, useDrag } from "react-dnd";
@@ -114,7 +114,6 @@ const BurgerItem = ({
 };
 
 const BurgerConstructor = () => {
-  const [construct, setConstruct] = useState(true);
   const dispatch = useDispatch();
 
   const idPost = useSelector((state) => state.order.idPost);
@@ -123,20 +122,6 @@ const BurgerConstructor = () => {
   const data = useSelector((state) => state.getIngredData.data);
   const bunItem = useSelector((state) => state.getConstr.constrBun);
 
-  const sendData = (ingrElements) => {
-    return fetch(`${BURGER_API}/orders`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        ingredients: ingrElements,
-      }),
-    })
-      .then((res) => checkRes(res))
-      .then((data) => dispatch(getOrderId(data.order.number)))
-      .catch((res) => console.log(res));
-  };
   useEffect(() => {
     const sourcePrice = () => {
       dispatch(getOrderTotal());
@@ -148,6 +133,7 @@ const BurgerConstructor = () => {
     accept: "constrItem",
     drop: (item) => {
       item.type === "bun" ? dispatch(getBun({ ...item })) : addSection(item);
+      dispatch(getIngrId(item._id));
     },
   });
 
@@ -164,6 +150,7 @@ const BurgerConstructor = () => {
     const bunOrder = bunItem.price;
     return (totalOrder = totalOrder + bunOrder);
   }, [bunItem, price]);
+  const [construct, setConstruct] = useState(true);
 
   const pullIngr = useCallback(
     (dragIndex, hoverIndex) => {
@@ -233,7 +220,7 @@ const BurgerConstructor = () => {
           size="medium"
           onClick={() => {
             setConstruct(false);
-            sendData(idPost);
+            dispatch(sendData(idPost));
           }}
         >
           Оформить заказ

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useInView } from "react-intersection-observer";
 
 import { useDrag } from "react-dnd";
 
@@ -14,7 +15,7 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerIngredient = ({image, price, item, name}) => {
+const BurgerIngredient = ({ image, price, item, name }) => {
   const selectBuns = useSelector((state) => state.getConstr.constrBun);
   const selectedItem = useSelector((state) => state.getConstr.construct).filter(
     (itm) => item._id === itm._id
@@ -60,9 +61,28 @@ const BurgerIngredients = () => {
   const data = useSelector((state) => state.getIngredData.data);
   const [current, setCurrent] = useState("one");
   const [ingr, setIngr] = useState(true);
-  const sectionBuns = useRef();
-  const sectionSauces = useRef();
-  const sectionMain = useRef();
+
+  const [sectionBuns, sectionBunsView] = useInView({ threshold: 0 });
+  const [sectionSauces, sectionSaucesView] = useInView({ threshold: 0 });
+  const [sectionMain, sectionMainView] = useInView({ threshold: 0 });
+
+  useEffect(() => {
+    if (sectionBunsView) {
+      setCurrent("one");
+    } else if (sectionSaucesView) {
+      setCurrent("two");
+    } else if (sectionMainView) {
+      setCurrent("three");
+    }
+  }, [sectionBunsView, sectionSaucesView, sectionMainView]);
+
+  const scrollToBlock = (elmt) => {
+    setCurrent(elmt);
+    document.querySelector(`#${elmt}`).scrollIntoView({
+      behavior: "smooth",
+    });
+    console.log(elmt);
+  };
 
   const dispatch = useDispatch();
   useEffect(() => {
@@ -74,13 +94,25 @@ const BurgerIngredients = () => {
       <h1 className={burgIngrStyle.burgingridients__title}>Соберите бургер</h1>
 
       <div className={burgIngrStyle.burgingridients__titlemenu}>
-        <Tab value="one" active={current === "one"} onClick={setCurrent}>
+        <Tab
+          value="one"
+          active={current === "one"}
+          onClick={() => scrollToBlock("one")}
+        >
           Булки
         </Tab>
-        <Tab value="two" active={current === "two"} onClick={setCurrent}>
+        <Tab
+          value="two"
+          active={current === "two"}
+          onClick={() => scrollToBlock("two")}
+        >
           Соусы
         </Tab>
-        <Tab value="three" active={current === "three"} onClick={setCurrent}>
+        <Tab
+          value="three"
+          active={current === "three"}
+          onClick={() => scrollToBlock("three")}
+        >
           Начинки
         </Tab>
       </div>
@@ -88,6 +120,7 @@ const BurgerIngredients = () => {
       <div className={burgIngrStyle.burgingridients__menu}>
         <h2
           ref={sectionBuns}
+          id="one"
           className={burgIngrStyle.burgingridients__menu__title}
         >
           Булки
@@ -102,8 +135,8 @@ const BurgerIngredients = () => {
                     setIngr(false);
                     setCurrent("one");
                     dispatch(getIngrData(content));
-                    dispatch(getIngrId(content._id));
                   }}
+                  onMouseDown={() => dispatch(getIngrId(content._id))}
                 >
                   <BurgerIngredient
                     name={content.name}
@@ -118,6 +151,7 @@ const BurgerIngredients = () => {
 
         <h2
           ref={sectionSauces}
+          id="two"
           className={burgIngrStyle.burgingridients__menu__title}
         >
           Соусы
@@ -132,8 +166,8 @@ const BurgerIngredients = () => {
                     setIngr(false);
                     setCurrent("two");
                     dispatch(getIngrData(content));
-                    dispatch(getIngrId(content._id));
                   }}
+                  onMouseDown={() => dispatch(getIngrId(content._id))}
                 >
                   <BurgerIngredient
                     name={content.name}
@@ -148,6 +182,7 @@ const BurgerIngredients = () => {
 
         <h2
           ref={sectionMain}
+          id="three"
           className={burgIngrStyle.burgingridients__menu__title}
         >
           Начинки
@@ -162,8 +197,8 @@ const BurgerIngredients = () => {
                     setIngr(false);
                     setCurrent("three");
                     dispatch(getIngrData(content));
-                    dispatch(getIngrId(content._id));
                   }}
+                  onMouseDown={() => dispatch(getIngrId(content._id))}
                 >
                   <BurgerIngredient
                     name={content.name}
