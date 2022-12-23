@@ -174,7 +174,7 @@ const BurgerConstructor = () => {
         <BurgerItem
           position={"top"}
           locked={true}
-          name={bunItem.name + "верх"}
+          name={bunItem.name + " верх"}
           image={bunItem.image}
           price={bunItem.price / 2}
           key={bunItem.id}
@@ -203,7 +203,7 @@ const BurgerConstructor = () => {
         <BurgerItem
           position={"bottom"}
           locked={true}
-          name={bunItem.name + "низ"}
+          name={bunItem.name + " низ"}
           image={bunItem.image}
           price={bunItem.price / 2}
           key={bunItem.id}
