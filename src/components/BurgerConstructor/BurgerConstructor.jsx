@@ -2,14 +2,11 @@ import { useCallback, useEffect, useRef, useState, useMemo } from "react";
 
 import constructStyle from "./BurgerConstructor.module.css";
 import OrderDetails from "../OrderDetails/OrderDetails";
-import PropTypes from "prop-types";
+
 import Modal from "../Modal/Modal";
 import { sendData } from "../../services/actions/action";
-
-import { ingredientType } from "../../utils/types";
 import {
   getOrderTotal,
-  getOrderId,
   getBun,
   addItemConstr,
   sortIngrs,
@@ -27,7 +24,7 @@ import {
   DragIcon,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
-const BurgerItem = ({
+export const BurgerItem = ({
   name,
   price,
   image,
@@ -84,7 +81,6 @@ const BurgerItem = ({
   });
   const opacity = isDragging ? 0 : 1;
   drag(drop(ref));
-
   function isAvailItem() {
     if (position === "") {
       return <DragIcon type="primary" />;
@@ -130,7 +126,7 @@ const BurgerConstructor = () => {
   }, [sector, dispatch]);
 
   const [, drop] = useDrop({
-    accept: "constrItem",
+    accept: "ingrElmt",
     drop: (item) => {
       item.type === "bun" ? dispatch(getBun({ ...item })) : addSection(item);
       dispatch(getIngrId(item._id));
@@ -138,7 +134,7 @@ const BurgerConstructor = () => {
   });
 
   const addSection = (item) => {
-    dispatch(addItemConstr(...data.filter((itm) => itm._id === item.id)));
+    dispatch(addItemConstr(...data.filter((itm) => itm._id === item._id)));
   };
 
   const totalOrder = useMemo(() => {
@@ -174,7 +170,7 @@ const BurgerConstructor = () => {
         <BurgerItem
           position={"top"}
           locked={true}
-          name={bunItem.name + " верх"}
+          name={bunItem.name + " (верх)"}
           image={bunItem.image}
           price={bunItem.price / 2}
           key={bunItem.id}
@@ -203,7 +199,7 @@ const BurgerConstructor = () => {
         <BurgerItem
           position={"bottom"}
           locked={true}
-          name={bunItem.name + " низ"}
+          name={bunItem.name + " (низ)"}
           image={bunItem.image}
           price={bunItem.price / 2}
           key={bunItem.id}
@@ -231,10 +227,6 @@ const BurgerConstructor = () => {
       </Modal>
     </section>
   );
-};
-
-BurgerConstructor.propTypes = {
-  data: PropTypes.arrayOf(ingredientType),
 };
 
 export default BurgerConstructor;

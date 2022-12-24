@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useInView } from "react-intersection-observer";
 
@@ -22,7 +22,7 @@ const BurgerIngredient = ({ image, price, item, name }) => {
   );
 
   const [{ isDragging }, dragRef] = useDrag({
-    type: "constrItem",
+    type: "ingrElmt",
     item: item,
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
@@ -136,7 +136,7 @@ const BurgerIngredients = () => {
                     setCurrent("one");
                     dispatch(getIngrData(content));
                   }}
-                  onMouseDown={() => dispatch(getIngrId(content._id))}
+                  onMouseDown={() => dispatch(getIngrId(content))}
                 >
                   <BurgerIngredient
                     name={content.name}
@@ -167,7 +167,7 @@ const BurgerIngredients = () => {
                     setCurrent("two");
                     dispatch(getIngrData(content));
                   }}
-                  onMouseDown={() => dispatch(getIngrId(content._id))}
+                  onMouseDown={() => dispatch(getIngrId(content))}
                 >
                   <BurgerIngredient
                     name={content.name}
@@ -198,7 +198,7 @@ const BurgerIngredients = () => {
                     setCurrent("three");
                     dispatch(getIngrData(content));
                   }}
-                  onMouseDown={() => dispatch(getIngrId(content._id))}
+                  onMouseDown={() => dispatch(getIngrId(content))}
                 >
                   <BurgerIngredient
                     name={content.name}
