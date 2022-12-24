@@ -1,9 +1,13 @@
-import React, { useContext, useRef } from "react";
-import { IngredientsContext } from "../../services/appContext";
+import { useState, useEffect, useMemo } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useInView } from "react-intersection-observer";
+
+import { useDrag } from "react-dnd";
 
 import burgIngrStyle from "./BurgerIngredients.module.css";
 import IngredientDetails from "../IngredientDetails/IngredientDetails";
 import Modal from "../Modal/Modal";
+import { getFlow, getIngrId, getIngrData } from "../../services/actions/action";
 
 import {
   Tab,
@@ -11,29 +15,104 @@ import {
   Counter,
 } from "@ya.praktikum/react-developer-burger-ui-components";
 
+const BurgerIngredient = ({ image, price, item, name }) => {
+  const selectBuns = useSelector((state) => state.getConstr.constrBun);
+  const selectedItem = useSelector((state) => state.getConstr.construct).filter(
+    (itm) => item._id === itm._id
+  );
+
+  const [{ isDragging }, dragRef] = useDrag({
+    type: "ingrElmt",
+    item: item,
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
+
+  const opacity = isDragging ? 0.3 : 1;
+
+  const checkCount = useMemo(() => {
+    if (item.type === "bun") {
+      return selectBuns && selectBuns._id === item._id ? 2 : 0;
+    }
+    return selectedItem.length;
+  });
+
+  return (
+    <div className={burgIngrStyle.item} ref={dragRef} style={{ opacity }}>
+      <img src={image} alt={name} className={burgIngrStyle.item__picture} />
+      {checkCount === 0 ? null : (
+        <Counter
+          className={burgIngrStyle.counter}
+          count={checkCount}
+          size="default"
+        />
+      )}
+      <div className={burgIngrStyle.item__value}>
+        <p className={burgIngrStyle.value}>{price}</p>
+        <CurrencyIcon className={burgIngrStyle.item__logo} type="primary" />
+      </div>
+      <p className={burgIngrStyle.item__description}>{name}</p>
+    </div>
+  );
+};
+
 const BurgerIngredients = () => {
-  const [current, setCurrent] = React.useState("one");
-  const [ingrData, setIngrData] = React.useState({});
+  const data = useSelector((state) => state.getIngredData.data);
+  const [current, setCurrent] = useState("one");
+  const [ingr, setIngr] = useState(true);
 
-  const { ingr, setIngr, data, addItem, includeIdPost } =
-    useContext(IngredientsContext);
+  const [sectionBuns, sectionBunsView] = useInView({ threshold: 0 });
+  const [sectionSauces, sectionSaucesView] = useInView({ threshold: 0 });
+  const [sectionMain, sectionMainView] = useInView({ threshold: 0 });
 
-  const sectionBuns = useRef();
-  const sectionSauces = useRef();
-  const sectionMain = useRef();
+  useEffect(() => {
+    if (sectionBunsView) {
+      setCurrent("one");
+    } else if (sectionSaucesView) {
+      setCurrent("two");
+    } else if (sectionMainView) {
+      setCurrent("three");
+    }
+  }, [sectionBunsView, sectionSaucesView, sectionMainView]);
+
+  const scrollToBlock = (elmt) => {
+    setCurrent(elmt);
+    document.querySelector(`#${elmt}`).scrollIntoView({
+      behavior: "smooth",
+    });
+    console.log(elmt);
+  };
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getFlow());
+  }, [dispatch]);
 
   return (
     <section className={burgIngrStyle.burgingridients}>
       <h1 className={burgIngrStyle.burgingridients__title}>Соберите бургер</h1>
 
       <div className={burgIngrStyle.burgingridients__titlemenu}>
-        <Tab value="one" active={current === "one"} onClick={setCurrent}>
+        <Tab
+          value="one"
+          active={current === "one"}
+          onClick={() => scrollToBlock("one")}
+        >
           Булки
         </Tab>
-        <Tab value="two" active={current === "two"} onClick={setCurrent}>
+        <Tab
+          value="two"
+          active={current === "two"}
+          onClick={() => scrollToBlock("two")}
+        >
           Соусы
         </Tab>
-        <Tab value="three" active={current === "three"} onClick={setCurrent}>
+        <Tab
+          value="three"
+          active={current === "three"}
+          onClick={() => scrollToBlock("three")}
+        >
           Начинки
         </Tab>
       </div>
@@ -41,46 +120,30 @@ const BurgerIngredients = () => {
       <div className={burgIngrStyle.burgingridients__menu}>
         <h2
           ref={sectionBuns}
+          id="one"
           className={burgIngrStyle.burgingridients__menu__title}
         >
           Булки
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {data.data.map(
-            (item) =>
-              item.type === "bun" && (
+          {data.map(
+            (content) =>
+              content.type === "bun" && (
                 <button
-                  key={item._id}
+                  key={content._id}
                   onClick={() => {
                     setIngr(false);
-                    setIngrData(item);
                     setCurrent("one");
-                    addItem(item);
-                    includeIdPost(item._id);
+                    dispatch(getIngrData(content));
                   }}
+                  onMouseDown={() => dispatch(getIngrId(content))}
                 >
-                  <div className={burgIngrStyle.item}>
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className={burgIngrStyle.item__picture}
-                    />
-                    <Counter
-                      className={burgIngrStyle.counter}
-                      count={1}
-                      size="default"
-                    />
-                    <div className={burgIngrStyle.item__value}>
-                      <p className={burgIngrStyle.value}>{item.price}</p>
-                      <CurrencyIcon
-                        className={burgIngrStyle.item__logo}
-                        type="primary"
-                      />
-                    </div>
-                    <p className={burgIngrStyle.item__description}>
-                      {item.name}
-                    </p>
-                  </div>
+                  <BurgerIngredient
+                    name={content.name}
+                    price={content.price}
+                    image={content.image}
+                    item={content}
+                  />
                 </button>
               )
           )}
@@ -88,46 +151,30 @@ const BurgerIngredients = () => {
 
         <h2
           ref={sectionSauces}
+          id="two"
           className={burgIngrStyle.burgingridients__menu__title}
         >
           Соусы
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {data.data.map(
-            (item) =>
-              item.type === "sauce" && (
+          {data.map(
+            (content) =>
+              content.type === "sauce" && (
                 <button
-                  key={item._id}
+                  key={content._id}
                   onClick={() => {
                     setIngr(false);
-                    setIngrData(item);
                     setCurrent("two");
-                    addItem(item);
-                    includeIdPost(item._id);
+                    dispatch(getIngrData(content));
                   }}
+                  onMouseDown={() => dispatch(getIngrId(content))}
                 >
-                  <div className={burgIngrStyle.item}>
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className={burgIngrStyle.item__picture}
-                    />
-                    <Counter
-                      className={burgIngrStyle.counter}
-                      count={1}
-                      size="default"
-                    />
-                    <div className={burgIngrStyle.item__value}>
-                      <p className={burgIngrStyle.value}>{item.price}</p>
-                      <CurrencyIcon
-                        className={burgIngrStyle.item__logo}
-                        type="primary"
-                      />
-                    </div>
-                    <p className={burgIngrStyle.item__description}>
-                      {item.name}
-                    </p>
-                  </div>
+                  <BurgerIngredient
+                    name={content.name}
+                    price={content.price}
+                    image={content.image}
+                    item={content}
+                  />
                 </button>
               )
           )}
@@ -135,48 +182,37 @@ const BurgerIngredients = () => {
 
         <h2
           ref={sectionMain}
+          id="three"
           className={burgIngrStyle.burgingridients__menu__title}
         >
           Начинки
         </h2>
         <div className={burgIngrStyle.burgingridients__menu__box}>
-          {data.data.map((item) => (
-            <button
-              key={item._id}
-              onClick={() => {
-                setIngr(false);
-                setIngrData(item);
-                setCurrent("three");
-                addItem(item);
-                includeIdPost(item._id);
-              }}
-            >
-              <div className={burgIngrStyle.item}>
-                <img
-                  src={item.image}
-                  alt={item.name}
-                  className={burgIngrStyle.item__picture}
-                />
-                <Counter
-                  className={burgIngrStyle.counter}
-                  count={1}
-                  size="default"
-                />
-                <div className={burgIngrStyle.item__value}>
-                  <p className={burgIngrStyle.value}>{item.price}</p>
-                  <CurrencyIcon
-                    className={burgIngrStyle.item__logo}
-                    type="primary"
+          {data.map(
+            (content) =>
+              content.type === "main" && (
+                <button
+                  key={content._id}
+                  onClick={() => {
+                    setIngr(false);
+                    setCurrent("three");
+                    dispatch(getIngrData(content));
+                  }}
+                  onMouseDown={() => dispatch(getIngrId(content))}
+                >
+                  <BurgerIngredient
+                    name={content.name}
+                    price={content.price}
+                    image={content.image}
+                    item={content}
                   />
-                </div>
-                <p className={burgIngrStyle.item__description}>{item.name}</p>
-              </div>
-            </button>
-          ))}
+                </button>
+              )
+          )}
         </div>
       </div>
       <Modal state={ingr} setState={setIngr}>
-        <IngredientDetails ingrData={ingrData} />
+        <IngredientDetails />
       </Modal>
     </section>
   );
