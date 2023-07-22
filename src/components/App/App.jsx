@@ -90,7 +90,7 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Profile>
-                  {authUser && <ProfileForm userData={authUser.user} />}
+                {authUser && <ProfileForm userData={authUser.user} />}
                 </Profile>
               </ProtectedRoute>
             }

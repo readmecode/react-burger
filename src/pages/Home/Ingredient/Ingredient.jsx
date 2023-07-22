@@ -1,3 +1,9 @@
+import React, { useMemo } from "react";
+import ingredientStyles from "./ingredient.module.css";
+import {
+  CurrencyIcon,
+  Counter,
+} from "@ya.praktikum/react-developer-burger-ui-components";
 import PropTypes from "prop-types";
 import { useDrag } from "react-dnd";
 import { useSelector } from "react-redux";

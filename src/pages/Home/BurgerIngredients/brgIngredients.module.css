@@ -15,7 +15,14 @@
 }
 
 .ingredients__container {
-  @@ -31,33 +28,39 @@
+  display: flex;
+}
+.ingredients__block {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  justify-items: center;
+}
+.ingredients__container__title {
   font-family: "JetBrains Mono";
   font-style: normal;
   font-weight: 700;
