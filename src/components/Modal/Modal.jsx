@@ -1,36 +1,49 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import ReactDOM from "react-dom";
-import mdlStyle from "./Modal.module.css";
-
-import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import modalStyles from "./modal.module.css";
 import ModalOverlay from "../ModalOverlay/ModalOverlay";
+import { CloseIcon } from "@ya.praktikum/react-developer-burger-ui-components";
+import { useSelector } from "react-redux";
 
-const Modal = ({ children, state, setState }) => {
+const Modal = ({ children, handleClose }) => {
+  const ingredientState = useSelector(
+    (state) => state.ingredientDetails.modalState
+  );
+
   useEffect(() => {
-    const handleClose = (e) => {
-      if (e.key === "Escape") {
-        setState(true);
+    const handleEscClose = (evt) => {
+      if (evt.key === "Escape") {
+        handleClose();
       }
     };
-    document.addEventListener("keydown", handleClose);
+    document.addEventListener("keydown", handleEscClose);
     return () => {
-      document.removeEventListener("keydown", handleClose);
+      document.removeEventListener("keydown", handleEscClose);
     };
-  }, [setState]);
+  });
 
   return ReactDOM.createPortal(
-    <div
-      className={state === false ? mdlStyle.modal : mdlStyle.modal__inactive}
-    >
-      <ModalOverlay setState={setState} />
-      <div className={mdlStyle.modal__box}>
-        <button className={mdlStyle.closebtn} onClick={() => setState(true)}>
-          <CloseIcon type="primary" />
-        </button>
-        {children}
+    <>
+      <div
+        className={
+          ingredientState === false || ingredientState === true
+            ? modalStyles.modal__container
+            : modalStyles.modal__container__disabled
+        }
+      >
+        <div className={modalStyles.modal}>
+          <div
+            className={modalStyles.button__close}
+            onClick={() => handleClose()}
+          >
+            <CloseIcon type="primary" />
+          </div>
+          {children}
+        </div>
+        <ModalOverlay handleClose={() => handleClose()} />
       </div>
-    </div>,
-    document.getElementById("modalwindow")
+    </>,
+    document.getElementById("modal")
   );
 };
 

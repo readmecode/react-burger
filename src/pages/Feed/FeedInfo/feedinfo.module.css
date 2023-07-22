@@ -1,0 +1,58 @@
+.feedInfo {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.feedInfo__action {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 3.6rem;
+}
+
+.feedInfo__block__title {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 3rem;
+  display: flex;
+  align-items: center;
+  color: #f2f2f3;
+  margin-bottom: 1rem;
+}
+
+.feedInfo__total__container {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.feedInfo__uppertitle {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 3rem;
+  color: #f2f2f3;
+  margin-top: 6rem;
+}
+
+.feedInfo__total__title {
+  font-family: "Iceland";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 19rem;
+  color: #f2f2f3;
+  text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25),
+    0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
+}
+
+.feedInfo__num__order {
+  font-family: "Iceland";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 3.5rem;
+  display: flex;
+  align-items: center;
+  color: #00cccc;
+}

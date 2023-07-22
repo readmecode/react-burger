@@ -1,0 +1,22 @@
+.order {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 3.5rem;
+}
+
+.order__middle {
+  margin: 0 6rem;
+  position: absolute;
+}
+
+.order__middle:first-child {
+  top: -1.5rem;
+  left: -1rem;
+}
+.order__middle:last-child {
+  bottom: 11rem;
+  left: -1rem;
+}
+
+
