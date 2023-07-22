@@ -1,36 +1,35 @@
-import { FC } from "react";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { PasswordInput, Input, Button} from "@ya.praktikum/react-developer-burger-ui-components";
 import { NavLink, Navigate } from "react-router-dom";
 import { resetPasswordThunk } from "../../services/reducers/ResetReducers/resetReducer";
 import resetStyle from "./reset.module.css";
 import { createSelector } from "@reduxjs/toolkit";
-import { RootState, useAppDispatch, useAppSelector } from "../../services/store";
 
-const Reset: FC = () => {
-  const dispatch = useAppDispatch()
+const Reset = () => {
+  const dispatch = useDispatch()
 
   const [password, setPassword] = useState("")
   const [token, setToken] = useState("")
 
   const resetSelector = createSelector(
-    (state: RootState) => state.resetSlice.resultData,
-    (state: RootState)=> state.resetSlice.successTrue,
+    state => state.resetSlice.resultData,
+    state => state.resetSlice.successTrue,
     (resultData, forgotSuccess) => ({resultData, forgotSuccess})
   )
 
-  const {resultData, forgotSuccess} = useAppSelector(resetSelector)
+  const {resultData, forgotSuccess} = useSelector(resetSelector)
 
-  const submitData = (evt: FormEvent) => {
+  const submitData = (evt) => {
     evt.preventDefault()
     dispatch(resetPasswordThunk({password, token}))
   }
-  
+
   if(forgotSuccess !== true) {
     return <Navigate to={`/forgot-password`} replace={true}/>
   }
 
-  if(resultData?.success) {
+  if(resultData.success) {
     return <Navigate to={`/login`}/>
   }
   return (
