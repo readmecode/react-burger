@@ -158,7 +158,7 @@ const BurgerConstructor = () => {
           </p>
           <CurrencyIcon type="primary" />
         </div>
-        {authUser && authUser.success ? (
+        {authUser.success ? (
           <Link
             to={`/orders`}
             state={{ background: location }}

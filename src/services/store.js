@@ -5,14 +5,14 @@ import ingredientDetails from "./reducers/HomeReducers/ingredientDetails.js";
 import burgerConstructor from "./reducers/HomeReducers/burgerConstructor.js";
 import orderRequestSlice from "./reducers/HomeReducers/orderThunk.js";
 
-import registerSlice from "./reducers/RegisterReducers/registerReducer.js";
-import loginSlice from "./reducers/LoginReducer/loginReducer.js";
-import resetSlice from "./reducers/ResetReducers/resetReducer.js";
+import registerSlice from "./reducers/RegisterReducers/registerReducer";
+import loginSlice from "./reducers/LoginReducer/loginReducer";
+import resetSlice from "./reducers/ResetReducers/resetReducer";
 import userDataSlice from "./reducers/UserDataReducer/userDataSlice.js";
 import logoutSlice from "./reducers/logoutReducer/logoutReducer.js";
-import feedSlice from "./reducers/feedReducer/feedReducer.js";
+import feedSlice from "./reducers/feedReducer/feedReducer";
 
-import { wsActions } from "./reducers/feedReducer/feedReducer.js";
+import { wsActions } from "./reducers/feedReducer/feedReducer";
 import { socketMiddleware } from "../middleware/wsMiddleware.js";
 
 const rootReducer = combineReducers({
@@ -33,4 +33,3 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(socketMiddleware(wsActions)),
 });
-

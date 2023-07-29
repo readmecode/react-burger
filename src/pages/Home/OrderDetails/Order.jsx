@@ -48,6 +48,7 @@ const Order = ({
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {
         return;
       }
+
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {
         return;
       }
@@ -107,4 +108,5 @@ Order.propTypes = {
     })
   ),
 };
+
 export default Order;

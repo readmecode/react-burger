@@ -1,38 +1,45 @@
 import { createSlice } from "@reduxjs/toolkit";
-import {TburgerConstructorState, TIngredientData} from "../../../utils/types/type";
-
-const initialState: TburgerConstructorState = {
-  bunArr: [],
-  constructorArr: [],
-  price: 0,
-}
+import { v4 as uuidv4 } from "uuid";
 
 const burgerConstructor = createSlice({
   name: "burgerConstructor",
-  initialState: initialState,
+  initialState: {
+    bunArr: [],
+    constructorArr: [],
+    price: 0,
+  },
   reducers: {
     getConstructorElements: (state, action) => {
-      state.constructorArr = [...state.constructorArr, action.payload]
+      state.constructorArr = [
+        ...state.constructorArr,
+        { ...action.payload, id: uuidv4() },
+      ];
     },
     getConstructorBuns: (state, action) => {
-      state.bunArr = action.payload
+      state.bunArr = action.payload;
     },
     getTotalPrice: (state) => {
-      state.price = state.constructorArr.reduce((prev: number, curr: TIngredientData) => curr.type === "bun" ? (prev + curr.price) : prev + curr.price, 0)
+      state.price = state.constructorArr.reduce(
+        (prev, curr) =>
+          curr.type === "bun" ? prev + curr.price : prev + curr.price,
+        0
+      );
     },
     removeConstructorElement: (state, action) => {
-      state.constructorArr = state.constructorArr.filter((el: TIngredientData) => el.id !== action.payload)
+      state.constructorArr = state.constructorArr.filter(
+        (el) => el.id !== action.payload
+      );
     },
     sortingConstructorElements: (state, action) => {
-      state.constructorArr = action.payload
-    }
-  }
-})
+      state.constructorArr = action.payload;
+    },
+  },
+});
 export const {
   getConstructorElements,
   getConstructorBuns,
   getTotalPrice,
   removeConstructorElement,
-  sortingConstructorElements
-  } = burgerConstructor.actions
-export default burgerConstructor.reducer
+  sortingConstructorElements,
+} = burgerConstructor.actions;
+export default burgerConstructor.reducer;

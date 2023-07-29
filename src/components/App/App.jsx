@@ -52,14 +52,14 @@ const App = () => {
   useEffect(() => {
     dispatch(userAuth());
     console.log(authUser);
-    if (authUser && authUser.message === "jwt expired") {
+    if (authUser.message === "jwt expired") {
       dispatch(refreshTokenThunk());
     }
   }, [dispatch, dataLogin]);
 
   useEffect(() => {
     console.log(changeData);
-    if (changeData && changeData.message === "jwt expired") {
+    if (changeData.message === "jwt expired") {
       dispatch(refreshTokenThunk());
     }
   }, [changeData, dispatch]);
@@ -90,7 +90,7 @@ const App = () => {
             element={
               <ProtectedRoute>
                 <Profile>
-                {authUser && <ProfileForm userData={authUser.user} />}
+                  <ProfileForm userData={authUser.user} />
                 </Profile>
               </ProtectedRoute>
             }

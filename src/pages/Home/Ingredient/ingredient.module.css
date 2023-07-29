@@ -7,7 +7,6 @@
   position: relative;
   padding: .5rem;
   border-radius: 20px;
-  cursor: grab;
 }
 
 .ingredient__block__number {
@@ -34,8 +33,4 @@
   line-height: 24px;
   text-align: center;
   color: #f2f2f3;
-}
-
-.ingredient_disabled {
-  opacity: .7;
 }

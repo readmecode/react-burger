@@ -18,6 +18,7 @@
   position: absolute;
   z-index: -100;
 }
+
 .modal {
   width: 100%;
   max-width: 110rem;

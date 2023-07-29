@@ -26,6 +26,6 @@
   align-items: center;
   color: #f2f2f3;
   height: 5.6rem;
-  column-gap: 0.8rem;
+  column-gap: .8rem;
   cursor: pointer;
 }

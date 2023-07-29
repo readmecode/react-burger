@@ -1,51 +1,57 @@
-export const socketMiddleware = wsActions => {
-  return store => {
-  let socket = null;
+export const socketMiddleware = (wsActions) => {
+  return (store) => {
+    let socket = null;
 
-  return next => action => {
-    const { dispatch } = store;
-    const { type, payload } = action;
-    const { wsInit, onOpen, onClose, onError, onMessage } = wsActions
+    return (next) => (action) => {
+      const { dispatch } = store;
+      const { type, payload } = action;
+      const { wsInit, onOpen, onClose, onError, onMessage } = wsActions;
 
-    if (type === wsInit) {
-      if (socket?.readyState === 1) {
+      if (type === wsInit) {
+        socket = new WebSocket(payload);
+      }
+
+      if (type === wsInit && socket?.readyState === 1) {
         socket.close();
       }
-      socket = new WebSocket(payload);
-    }
 
-    if (socket) {
-      socket.onopen = (e) => {
-        console.log(e)
-        dispatch({ type: onOpen });
-      };
+      if (socket) {
+        socket.onopen = (e) => {
+          console.log(e);
+          dispatch({ type: onOpen });
+        };
 
-      socket.onerror = (e) => {
-        console.log(e)
-        dispatch({ type: onError });
-      };
-      
-      socket.onmessage = (event) => {
-        const { data } = event;
-        const parsedData = JSON.parse(data);
-        const { ...restParsedData } = parsedData;
+        socket.onerror = (e) => {
+          console.log(e);
+          dispatch({ type: onError });
+        };
 
-        if (restParsedData.orders) {
-          restParsedData.orders.sort(
-            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
+        socket.onmessage = (event) => {
+          const { data } = event;
+          const parsedData = JSON.parse(data);
+          const { ...restParsedData } = parsedData;
 
-          dispatch({ type: onMessage, payload: restParsedData });
-        }
-      };
+          if (restParsedData.orders) {
+            restParsedData.orders.sort(
+              (a, b) =>
+                new Date(b.createdAt).getTime() -
+                new Date(a.createdAt).getTime()
+            );
 
-      socket.onclose = event => {
-        console.log(event)
-        dispatch({ type: onClose, payload: event });
-      };
-    }
+            dispatch({ type: onMessage, payload: restParsedData });
+          }
+        };
+        socket.onclose = (event) => {
+          dispatch({ type: "WS_CONNECTION_CLOSED", payload: event });
+        };
 
-    next(action);
-  };
+        socket.onclose = (e) => {
+          console.log(e);
+          dispatch({ type: onClose });
+        };
+      }
+
+      next(action);
+    };
   };
 };

@@ -44,6 +44,7 @@ const BurgerIngredients = () => {
       <h1 className={brgIngredientsStyles.ingredients__title}>
         Соберите бургер
       </h1>
+
       <div className={brgIngredientsStyles.ingredients__tab}>
         <Tab active={current === "one"} onClick={() => scrollToBlock("one")}>
           Булки
@@ -168,4 +169,5 @@ const BurgerIngredients = () => {
     </section>
   );
 };
+
 export default BurgerIngredients;

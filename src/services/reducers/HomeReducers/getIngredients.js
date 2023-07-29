@@ -1,39 +1,45 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { apiUrl } from "../../../utils/Api";
 import { reqRes } from "../../../utils/Api";
-import { TGetIngredientsState } from "../../../utils/types/type";
 
 export const getDataIngredients = createAsyncThunk(
   "data/getDataIngredients",
-  async() => {
+  async () => {
     return fetch(`${apiUrl}/ingredients`)
-    .then(res => reqRes(res))
+      .then((res) => reqRes(res))
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
-)
-
-const initialState: TGetIngredientsState =  {
-  data: [],
-  success: false,
-}
+);
 
 const getIngredients = createSlice({
   name: "getIngredients",
-  initialState: initialState,
-  reducers: {},
+  initialState: {
+    data: [],
+    success: false,
+    error: null,
+    pending: null,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getDataIngredients.pending, (state) => {
-        state.success = false
+        state.error = null;
+        state.success = false;
+        state.pending = "pending ...";
       })
       .addCase(getDataIngredients.fulfilled, (state, action) => {
-        console.log(action.payload)
-        state.success = true
-        state.data = action.payload.data
+        state.error = null;
+        state.success = true;
+        state.pending = "resolve";
+        state.data = action.payload;
       })
       .addCase(getDataIngredients.rejected, (state) => {
-        state.success = false
-      })
-  }
-})
+        state.error = "null";
+        state.pending = null;
+        state.success = false;
+      });
+  },
+});
 
-export default getIngredients.reducer
+export default getIngredients.reducer;

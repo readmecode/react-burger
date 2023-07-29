@@ -1,120 +1,129 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { apiUrl, reqRes } from "../../../utils/Api";
 import { getCookie, setCookie } from "../../../utils/Cookies";
-import { TDataString, TLoginState } from "../../../utils/types/type";
 
 export const loginThunk = createAsyncThunk(
   "logUser/loginThunk",
-  async({email, password}: TDataString) => {
+  async ({ email, password }) => {
     return fetch(`${apiUrl}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        "email": email,
-        "password": password
-      })
+        email: email,
+        password: password,
+      }),
     })
-    .then(res => reqRes(res))
+      .then((res) => reqRes(res))
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
-)
+);
 
-export const userAuth = createAsyncThunk(
-  "user/userAuth",
-  async() => {
-    return fetch(`${apiUrl}/auth/user`, {
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${getCookie("accessToken")?.split(" ")[1]}`
-      }
-    })
-    .then(res => reqRes(res))
-  }
-)
+export const userAuth = createAsyncThunk("user/userAuth", async () => {
+  return fetch(`${apiUrl}/auth/user`, {
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${getCookie("accessToken").split(" ")[1]}`,
+    },
+  })
+    .then((res) => reqRes(res))
+    .catch((err) => {
+      throw new Error(err);
+    });
+});
 
 export const refreshTokenThunk = createAsyncThunk(
   "token/refreshTokenThunk",
-  async() => {
+  async () => {
     return fetch(`${apiUrl}/auth/token`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        "token": `${getCookie("refreshToken")}`
+        token: `${getCookie("refreshToken")}`,
+      }),
+    })
+      .then((res) => {
+        return res.json();
       })
-    })
-    .then(res => {
-      return res.json()
-    })
+      .catch((err) => {
+        throw new Error(err);
+      });
   }
-)
-
-const initialState: TLoginState = {
-  data: null,
-  dataUser: null,
-  accessToken: "",
-  refreshToken: "",
-  error: null,
-  resolve: null,
-}
+);
 
 const loginSlice = createSlice({
   name: "registerSlice",
-  initialState: initialState,
+  initialState: {
+    data: {},
+    dataUser: {},
+    accessToken: "",
+    refreshToken: "",
+    error: null,
+    resolve: null,
+  },
   reducers: {
     logout: (state) => {
-      state.data = null
-      state.dataUser = null
-    }
+      state.data = {};
+      state.dataUser = {};
+    },
   },
   extraReducers(builder) {
     builder
       .addCase(loginThunk.pending, (state) => {
-        state.error = null
-        state.resolve = false
+        state.error = null;
+        state.resolve = false;
       })
       .addCase(loginThunk.fulfilled, (state, action) => {
-        state.error = null
-        state.resolve = true
-        state.data = action.payload
+        state.error = null;
+        state.resolve = true;
+        state.data = action.payload;
       })
       .addCase(loginThunk.rejected, (state) => {
-        state.error = "error"
-        state.resolve = false
+        state.error = "error";
+        state.resolve = false;
       })
 
       .addCase(userAuth.pending, (state) => {
-        state.error = null
-        state.resolve = false
+        state.error = null;
+        state.resolve = false;
       })
       .addCase(userAuth.fulfilled, (state, action) => {
-        state.error = null
-        state.resolve = true
-        state.dataUser = action.payload
-      }) 
+        state.error = null;
+        state.resolve = true;
+        state.dataUser = action.payload;
+      })
       .addCase(userAuth.rejected, (state) => {
-        state.error = "error"
-        state.resolve = false
+        state.error = "error";
+        state.resolve = false;
       })
 
       .addCase(refreshTokenThunk.pending, (state) => {
-        state.error = null
-        state.resolve = false
+        state.error = null;
+        state.resolve = false;
       })
       .addCase(refreshTokenThunk.fulfilled, (state, action) => {
-        state.error = null
-        state.resolve = true
-        state.refreshToken = setCookie("refreshToken", action.payload.refreshToken)
-        state.accessToken = setCookie("accessToken", action.payload.accessToken)
-      }) 
-      .addCase(refreshTokenThunk.rejected, (state) => {
-        state.error = "error"
-        state.resolve = false
+        state.error = null;
+        state.resolve = true;
+        state.refreshToken = setCookie(
+          "refreshToken",
+          action.payload.refreshToken
+        );
+        state.accessToken = setCookie(
+          "accessToken",
+          action.payload.accessToken
+        );
       })
-  }
-})
+      .addCase(refreshTokenThunk.rejected, (state) => {
+        state.error = "error";
+        state.resolve = false;
+      });
+  },
+});
 
-export const {logout}  = loginSlice.actions
-export default loginSlice.reducer
+export const { logout } = loginSlice.actions;
+export default loginSlice.reducer;

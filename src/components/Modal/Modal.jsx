@@ -46,4 +46,5 @@ const Modal = ({ children, handleClose }) => {
     document.getElementById("modal")
   );
 };
+
 export default Modal;

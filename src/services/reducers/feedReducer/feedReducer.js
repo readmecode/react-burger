@@ -1,54 +1,46 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { TFeedState } from "../../../utils/types/type";
-
-const initialState: TFeedState = {
-  data: [],
-  url: "",
-  total: null,
-  totalToday: null,
-  success: false,
-}
 
 const feedSlice = createSlice({
   name: "feedSlice",
-  initialState: initialState,
+  initialState: {
+    data: [],
+    dataImages: [],
+    total: null,
+    totalToday: null,
+    success: false,
+    time: "",
+  },
   reducers: {
-    connStart: (state, action) => {
-      state.success = false
-      state.url = action.payload
+    connStart: () => {
+      return undefined;
     },
     connSuccess: (state) => {
-      state.success = true
+      state.success = true;
     },
     connClosed: (state) => {
-      state.success = false
+      state.success = false;
     },
     connError: (state) => {
-      state.success = false
+      state.success = false;
     },
     getMsg: (state, action) => {
-      const { orders, total, totalToday} = action.payload
-
-      state.data = orders
-      state.total = total
-      state.totalToday = totalToday
+      const { orders, total, totalToday } = action.payload;
+      state.data = orders;
+      state.dataImages = orders;
+      state.total = total;
+      state.totalToday = totalToday;
     },
-  } 
-})
+  },
+});
 
-export const {
-  connStart,
-  connSuccess, 
-  connError, 
-  connClosed, 
-  getMsg
-} = feedSlice.actions
+export const { connStart, connSuccess, connError, connClosed, getMsg } =
+  feedSlice.actions;
 
 export const wsActions = {
   wsInit: connStart.type,
   onOpen: connSuccess.type,
   onClose: connClosed.type,
   onError: connError.type,
-  onMessage: getMsg.type
-}
-export default feedSlice.reducer
+  onMessage: getMsg.type,
+};
+export default feedSlice.reducer;
