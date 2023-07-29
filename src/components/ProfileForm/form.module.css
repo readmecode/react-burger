@@ -19,11 +19,11 @@
   text-align: center;
   color: #4c4cff;
   cursor: pointer;
-  transition: 0.4s ease;
+  transition: .4s ease;
 }
 
 .profile__button__reset:hover {
-  opacity: 0.8;
+  opacity: .8;
 }
 
 .profile__button__container {
