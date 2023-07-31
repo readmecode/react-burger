@@ -1,0 +1,82 @@
+.ingredient__modal {
+  width: inherit;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.ingredient__title {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 40px;
+  display: flex;
+  align-items: center;
+  color: #f2f2f3;
+  position: absolute;
+  top: 50px;
+  left: 40px;
+}
+
+.ingredient__modal__img {
+  width: 100%;
+  max-width: 480px;
+  height: auto;
+  margin-bottom: 16px;
+  margin-top: 104px;
+}
+
+.ingredient__structure {
+  display: flex;
+  flex-direction: column;
+  height: 118px;
+  width: 100%;
+  max-width: 520px;
+  margin-bottom: 60px;
+}
+
+.ingredient__block__container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.ingredient__title__name {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 30px;
+  text-align: center;
+  margin-bottom: 32px;
+  color: #f2f2f3;
+}
+
+.ingredient__block__name {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  text-align: center;
+  color: #8585ad;
+  margin-bottom: 8px;
+}
+
+.ingredient__block__num {
+  font-family: "Iceland";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #8585ad;
+}
+
+.ingredient__block {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}

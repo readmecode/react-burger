@@ -1,0 +1,27 @@
+.pOrder {
+  width: 85rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pOrder__card {
+  height: 80vh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pOrder__card::-webkit-scrollbar {
+  background: #2f2f37;
+  height: 5px;
+  width: 1rem;
+}
+
+.pOrder__card::-webkit-scrollbar-thumb {
+  background: #8585ad;
+  height: 200px;
+  width: 1rem;
+}

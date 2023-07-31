@@ -1,0 +1,35 @@
+.profile__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  row-gap: 3rem;
+  position: relative;
+  width: 150%;
+  width: 85rem;
+}
+
+.profile__button__reset {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #4c4cff;
+  cursor: pointer;
+  transition: .4s ease;
+}
+
+.profile__button__reset:hover {
+  opacity: .8;
+}
+
+.profile__button__container {
+  display: flex;
+  width: 477px;
+  justify-content: flex-end;
+  column-gap: 4rem;
+  height: 7.5rem;
+}

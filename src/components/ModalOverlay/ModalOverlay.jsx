@@ -1,18 +1,20 @@
-import React from "react";
-import mdloverlayStyle from "./ModalOverlay.module.css";
-import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
+import overlayStyles from "./modalOverlay.module.css";
 
-const ModalOverlay = ({ setState }) => {
+const ModalOverlay = ({ handleClose }) => {
+  const ingredientState = useSelector(
+    (state) => state.ingredientDetails.modalState
+  );
   return (
     <div
-      className={mdloverlayStyle.overlay}
-      onClick={() => setState(true)}
+      className={
+        ingredientState === false || ingredientState === true
+          ? overlayStyles.modal__overlay
+          : overlayStyles.modal__overlay__disabled
+      }
+      onClick={() => handleClose()}
     ></div>
   );
-};
-
-ModalOverlay.propTypes = {
-  setState: PropTypes.func,
 };
 
 export default ModalOverlay;
