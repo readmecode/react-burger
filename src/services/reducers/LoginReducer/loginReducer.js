@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { apiUrl, reqRes } from "../../../utils/Api";
 import { getCookie, setCookie } from "../../../utils/Cookies";
+import fetchWithRefresh from "../../../utils/Api";
 
 export const loginThunk = createAsyncThunk(
   "logUser/loginThunk",
@@ -22,31 +23,42 @@ export const loginThunk = createAsyncThunk(
   }
 );
 
-export const userAuth = createAsyncThunk("user/userAuth", async () => {
-  return fetch(`${apiUrl}/auth/user`, {
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${getCookie("accessToken").split(" ")[1]}`,
-    },
-  })
-    .then((res) => reqRes(res))
-    .catch((err) => {
-      throw new Error(err);
-    });
-});
+export const userAuth = createAsyncThunk(
+  "user/userAuth",
+  async (_, { dispatch }) => {
+    return fetchWithRefresh(
+      `${apiUrl}/auth/user`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getCookie("accessToken").split(" ")[1]}`,
+        },
+      },
+      dispatch
+    )
+      .then((res) => reqRes(res))
+      .catch((err) => {
+        throw new Error(err);
+      });
+  }
+);
 
 export const refreshTokenThunk = createAsyncThunk(
   "token/refreshTokenThunk",
-  async () => {
-    return fetch(`${apiUrl}/auth/token`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+  async (_, { dispatch }) => {
+    return fetchWithRefresh(
+      `${apiUrl}/auth/token`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          token: `${getCookie("refreshToken")}`,
+        }),
       },
-      body: JSON.stringify({
-        token: `${getCookie("refreshToken")}`,
-      }),
-    })
+      dispatch
+    )
       .then((res) => {
         return res.json();
       })

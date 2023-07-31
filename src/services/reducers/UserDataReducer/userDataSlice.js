@@ -1,24 +1,27 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { apiUrl, reqRes } from "../../../utils/Api";
+import { apiUrl } from "../../../utils/Api";
 import { getCookie } from "../../../utils/Cookies";
+import fetchWithRefresh from "../../../utils/Api";
 
 export const changeUserDataThunk = createAsyncThunk(
   "user/changeUserDataThunk",
-  async ({ email, name, password }) => {
-    return fetch(`${apiUrl}/auth/user`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json;charset=utf-8",
-        Authorization: `Bearer ${getCookie("accessToken").split(" ")[1]}`,
+  async ({ email, name, password }, { dispatch }) => {
+    return fetchWithRefresh(
+      `${apiUrl}/auth/user`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json;charset=utf-8",
+          Authorization: `Bearer ${getCookie("accessToken").split(" ")[1]}`,
+        },
+        body: JSON.stringify({
+          email: email,
+          name: name,
+          password: password,
+        }),
       },
-      body: JSON.stringify({
-        email: email,
-        name: name,
-        password: password,
-      }),
-    })
-      .then((res) => reqRes(res))
-      .catch((err) => console.log(err));
+      dispatch
+    ).catch((err) => console.log(err));
   }
 );
 

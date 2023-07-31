@@ -1,20 +1,25 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { apiUrl, reqRes } from "../../../utils/Api";
 import { getCookie } from "../../../utils/Cookies";
+import fetchWithRefresh from "../../../utils/Api";
 
 export const orderThunk = createAsyncThunk(
   "data/orderThunk",
-  async (ingredArrayId) => {
-    return fetch(`${apiUrl}/orders`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${getCookie("accessToken").split(" ")[1]}`,
+  async (ingredArrayId, { dispatch }) => {
+    return fetchWithRefresh(
+      `${apiUrl}/orders`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getCookie("accessToken").split(" ")[1]}`,
+        },
+        body: JSON.stringify({
+          ingredients: ingredArrayId,
+        }),
       },
-      body: JSON.stringify({
-        ingredients: ingredArrayId,
-      }),
-    })
+      dispatch
+    )
       .then((res) => reqRes(res))
       .catch((err) => {
         throw new Error(err);
