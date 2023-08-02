@@ -10,7 +10,6 @@ import FeedOrder from "./FeedOrder/FeedOrder";
 import { createSelector } from "@reduxjs/toolkit";
 import Loader from "../../components/Loader/loader";
 import FeedInfo from "./FeedInfo/FeedInfo";
-import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components";
 
 const FeedPage = () => {
   const dispatch = useDispatch();

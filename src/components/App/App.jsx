@@ -40,7 +40,7 @@ const App = () => {
     (dataLogin, authUser, changeData) => ({ dataLogin, authUser, changeData })
   );
 
-  const { authUser } = useSelector(appSelector);
+  const { dataLogin, authUser, changeData } = useSelector(appSelector);
   const background = location.state && location.state.background;
 
   useEffect(() => {

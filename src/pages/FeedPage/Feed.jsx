@@ -87,7 +87,6 @@ const Feed = () => {
           <ul className={feedStyle.feed__container}>
             {ingData?.map((el) => (
               <FeedCard
-                id={el._id}
                 name={el.name}
                 price={el.price}
                 image={el.image}
