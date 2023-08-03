@@ -8,11 +8,19 @@ import { useEffect } from "react";
 import { wsApiUrl } from "../../../utils/Api";
 import { getCookie } from "../../../utils/Cookies";
 import { createSelector } from "@reduxjs/toolkit";
-import { useState } from "react";
 import FeedOrder from "../../Feed/FeedOrder/FeedOrder";
 import Loader from "../../../components/Loader/loader";
 
 const ProfileOrders = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(
+      connStart(`${wsApiUrl}?token=${getCookie("accessToken").split(" ")[1]}`)
+    );
+    return () => dispatch(connClosed());
+  }, [dispatch]);
+
   const feedSelector = createSelector(
     (state) => state.feedSlice.data,
     (state) => state.feedSlice.total,

@@ -18,9 +18,7 @@ const Profile = ({ children }) => {
     dispatch(
       connStart(`${wsApiUrl}?token=${getCookie("accessToken").split(" ")[1]}`)
     );
-    return () => {
-      dispatch(connClosed());
-    };
+    return () => dispatch(connClosed());
   }, [dispatch]);
 
   const logoutFromProfile = () => {
@@ -41,7 +39,7 @@ const Profile = ({ children }) => {
                 : profileStyle.profile__link_disabled
             }
             to="/profile"
-            exact="true"
+            end
           >
             Профиль
           </NavLink>

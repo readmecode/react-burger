@@ -11,9 +11,7 @@ const feedSlice = createSlice({
     time: "",
   },
   reducers: {
-    connStart: () => {
-      return undefined;
-    },
+    connStart: () => {},
     connSuccess: (state) => {
       state.success = true;
     },

@@ -3,7 +3,7 @@ import { CurrencyIcon } from "@ya.praktikum/react-developer-burger-ui-components
 
 const FeedCard = ({ id, image, name, price, count }) => {
   return (
-    <li className={fcardStyle.fcard__block} key={id}>
+    <li className={fcardStyle.fcard__block}>
       <div className={fcardStyle.fcard__info__block}>
         <span className={fcardStyle.fcard__icon__block}>
           <img

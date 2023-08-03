@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import loginStyle from "./login.module.css";
 import {
   EmailInput,
@@ -67,7 +67,7 @@ const Login = () => {
         </Button>
       </form>
       <span className={loginStyle.login__bottom}>
-        <p className={loginStyle.login__text}>Вы — новый пользователь?</p>
+        <p className={loginStyle.login__text}>Вы — новый пользователь?</p>
         <NavLink to={`/register`} className={loginStyle.login__link}>
           Зарегистрироваться
         </NavLink>
