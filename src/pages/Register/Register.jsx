@@ -60,7 +60,7 @@ const Register = () => {
           required
         />
         <Button htmlType="submit" type="primary" size="medium">
-          Зарегестрироваться
+          Зарегистрироваться
         </Button>
       </form>
       <span className={registerStyle.register__bottom}>
